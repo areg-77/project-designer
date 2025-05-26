@@ -41,6 +41,19 @@ export class TreeNode {
     this.tree = tree;
     this.#generateHTML();
 
+    this.children = new BindedProperty([], val => {
+      if (val.length > 0) {
+        this.element.expanderContainer.classList.remove('hidden');
+        this.element.ul.innerHTML = '';
+
+        val.forEach(child => {
+          this.element.ul.appendChild(child.element.li);
+        });
+      }
+      else
+        this.element.expanderContainer.classList.add('hidden');
+    });
+    
     this.parent = new BindedProperty(null, val => {
       const oldParent = this.parent?._value;
       if (oldParent) {
@@ -78,19 +91,6 @@ export class TreeNode {
       
       if (this.selected)
         console.log(this.tree.selectedNodes.map(s => s.label.value));
-    });
-
-    this.children = new BindedProperty([], val => {
-      if (val.length > 0) {
-        this.element.expanderContainer.classList.remove('hidden');
-        this.element.ul.innerHTML = '';
-
-        val.forEach(child => {
-          this.element.ul.appendChild(child.element.li);
-        });
-      }
-      else
-        this.element.expanderContainer.classList.add('hidden');
     });
   }
 
