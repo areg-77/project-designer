@@ -85,23 +85,20 @@ const treeObject =  {
 }
 
 const tree = new Tree();
-window.tree = tree;
-window.TreeNode = TreeNode;
-
-const projectNode = new TreeNode('Project', 'folder');
-const assetsNode = new TreeNode('Assets', 'folder');
-const heroNode = new TreeNode('hero.fbx', 'file');
-const buildingNode = new TreeNode('building.fbx', 'file');
-const projectFileNode = new TreeNode('project.json', 'file');
-
-assetsNode.children.push(heroNode, buildingNode);
-projectNode.children.push(assetsNode, projectFileNode);
-
-tree.setContent(projectNode);
+tree.content = buildTree(treeObject);
 
 function buildTree(obj) {
-  
+  const node = new TreeNode(tree, obj.label, obj.type);
+
+  obj.children.forEach(child => {
+    const childNode = buildTree(child);
+    childNode.parent.value = node;
+  });
+
+  return node;
 }
 
 document.querySelector('.treeview').appendChild(tree.content.element.li);
 console.log(tree);
+window.TreeNode = TreeNode;
+window.tree = tree;

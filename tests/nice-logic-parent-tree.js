@@ -3,6 +3,7 @@ class BindedProperty {
     this.onChange = onChange;
     if (this.onChange)
       this.onChange(value);
+
     this._value = value;
   }
 
@@ -37,8 +38,7 @@ export class TreeNode {
   children;
 
   // initializing the node
-  constructor(tree, label, type) {
-    this.tree = tree;
+  constructor(label, type, children = []) {
     this.#generateHTML();
 
     this.parent = new BindedProperty(null, val => {
@@ -47,47 +47,41 @@ export class TreeNode {
         oldParent.children.value = oldParent.children.value.filter(child => child !== this);
       }
       if (val) {
+        this.tree = val.tree;
+
         if (!val.children.value.includes(this))
           val.children.push(this);
       }
-      else {
-        this.element.li.remove();
-      }
     });
-    
     this.label = new BindedProperty(label, val => {
       this.element.treeLabel.textContent = val;
     });
-
     this.type = new BindedProperty(type, val => {
       this.element.treeIcon.src = `./icons/${val}-icon.svg`;
     });
-
     this.expanded = new BindedProperty(false, val => {
       this.element.treeNode.dataset.expanded = val;
     });
-
     this.selected = new BindedProperty(false, val => {
-      this.element.treeNode.dataset.selected = val;
+      if (this.tree) {
+        this.element.treeNode.dataset.selected = val;
 
-      if (val) {
-        if (!this.tree.selectedNodes.includes(this)) this.tree.selectedNodes.push(this);
-      }
-      else
-        this.tree.selectedNodes = this.tree.selectedNodes.filter(i => i !== this);
-      
-      if (this.selected)
+        if (val) {
+          if (!this.tree.selectedNodes.includes(this)) this.tree.selectedNodes.push(this);
+        }
+        else
+          this.tree.selectedNodes = this.tree.selectedNodes.filter(i => i !== this);
+        
         console.log(this.tree.selectedNodes.map(s => s.label.value));
+      }
     });
-
-    this.children = new BindedProperty([], val => {
+    this.children = new BindedProperty(children, val => {
       if (val.length > 0) {
         this.element.expanderContainer.classList.remove('hidden');
         this.element.ul.innerHTML = '';
 
-        val.forEach(child => {
+        for (const child of val)
           this.element.ul.appendChild(child.element.li);
-        });
       }
       else
         this.element.expanderContainer.classList.add('hidden');
@@ -124,12 +118,10 @@ export class TreeNode {
           ul: li.querySelector('.children-container ul')
     }
 
-    // setting up a listener for clicking on the expander for expanding/collapsing
     this.element.expanderContainer.addEventListener('click', () => {
       this.expanded.value = !this.expanded.value;
     });
 
-    // setting up a listener for clicking on the node for selecting/deselecting
     this.element.labelContainer.addEventListener('click', () => {
       this.selected.value = !this.selected.value;
     });
@@ -145,11 +137,18 @@ export class TreeNode {
 }
 
 export class Tree {
-  selectedNodes;
   content;
+  selectedNodes;
 
   constructor(content) {
+    this.setContent(content);
     this.selectedNodes = [];
-    this.content = content;
+  }
+
+  setContent(content) {
+    if (content) {
+      this.content = content;
+      this.content.tree = this;
+    }
   }
 }
