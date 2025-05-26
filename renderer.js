@@ -84,14 +84,24 @@ const treeObject =  {
   ]
 }
 
-const tree = new Tree(
-  buildTree(treeObject)
-);
+const tree = new Tree();
 window.tree = tree;
+window.TreeNode = TreeNode;
+
+const projectNode = new TreeNode('Project', 'folder');
+const assetsNode = new TreeNode('Assets', 'folder');
+const heroNode = new TreeNode('hero.fbx', 'file');
+const buildingNode = new TreeNode('building.fbx', 'file');
+const projectFileNode = new TreeNode('project.json', 'file');
+
+assetsNode.children.push(heroNode, buildingNode);
+projectNode.children.push(assetsNode, projectFileNode);
+
+tree.setContent(projectNode);
 
 function buildTree(obj) {
-  const children = (obj.children || []).map(buildTree);
-  return new TreeNode(obj.label, obj.type, children);
+  
 }
 
 document.querySelector('.treeview').appendChild(tree.content.element.li);
+console.log(tree);

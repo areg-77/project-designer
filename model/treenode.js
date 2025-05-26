@@ -2,6 +2,9 @@ class BindedProperty {
   constructor(value, onChange) {
     this._value = value;
     this.onChange = onChange;
+
+    if (this.onChange)
+      this.onChange(value);
   }
 
   get value() {
@@ -12,6 +15,14 @@ class BindedProperty {
     this._value = newVal;
     if (this.onChange)
       this.onChange(newVal);
+  }
+
+  push(...items) {
+    if (Array.isArray(this._value)) {
+      this._value.push(...items);
+      if (this.onChange)
+        this.onChange(this._value);
+    }
   }
 }
 
@@ -25,9 +36,16 @@ export class TreeNode {
   selected;
   children;
 
+  // initializing the node
   constructor(label, type, children = []) {
+    this.#generateHTML();
+    
     this.tree = new BindedProperty(null, val => {
-      this.children?.forEach(child => child.tree.value = val);
+      if (this.label)
+        console.log(`updated the tree variable to ${val} [for ${this.label.value}]`);
+      this.children?.value.forEach(child => {
+        child.tree.value = val;
+      });
     });
     this.label = new BindedProperty(label, val => {
       this.element.treeLabel.textContent = val;
@@ -41,47 +59,50 @@ export class TreeNode {
     this.selected = new BindedProperty(false, val => {
       this.element.treeNode.dataset.selected = val;
 
-      if (val) {
-        if (!this.tree.value.selectedNodes.includes(this)) this.tree.value.selectedNodes.push(this);
+      if (this.tree.value) {
+        if (val) {
+          if (!this.tree.value.selectedNodes.includes(this)) this.tree.value.selectedNodes.push(this);
+        }
+        else
+          this.tree.value.selectedNodes = this.tree.value.selectedNodes.filter(i => i !== this);
+        
+        console.log(this.tree.value.selectedNodes.map(s => s.label.value));
+      }
+    });
+    this.children = new BindedProperty(children, val => {
+      if (val.length > 0) {
+        this.tree.value = this.tree.value;
+
+        this.element.expanderContainer.classList.remove('hidden');
+        this.element.ul.innerHTML = '';
+
+        for (const child of val) {
+          child.tree.value = this.tree.value;
+          this.element.ul.appendChild(child.element.li);
+        }
       }
       else
-        this.tree.value.selectedNodes = this.tree.value.selectedNodes.filter(i => i !== this);
-      
-      console.log(this.tree.value.selectedNodes.map(s => s.label.value));
+        this.element.expanderContainer.classList.add('hidden');
     });
-    this.children = children;
-
-    this.#generateHTML();
-  }
-
-  throughChildren(callback) {
-    for (const child of this.children) {
-      callback(child);
-      child.throughChildren(callback);
-    }
   }
 
   #generateHTML() {
-    const li = document.createElement('li'), childrenContainer = document.createElement('div'), ul = document.createElement('ul');
-    childrenContainer.className = 'children-container';
-
-    this.children.forEach(child => {
-      ul.appendChild(child.element.li);
-    });
-    childrenContainer.appendChild(ul);
+    const li = document.createElement('li')
 
     li.innerHTML = `
-      <div class="tree-node" data-expanded="${this.expanded.value}" data-selected="${this.selected.value}">
-        <div class="expander-container ${this.children.length === 0 ? 'hidden' : ''}">
+      <div class="tree-node">
+        <div class="expander-container">
           <span class="expander"></span>
         </div>
         <div class="label-container">
-          <img class="tree-icon" src="./icons/${this.type.value}-icon.svg"/>
-          <span class="tree-label">${this.label.value}</span>
+          <img class="tree-icon"/>
+          <span class="tree-label"></span>
         </div>
       </div>
+      <div class="children-container">
+        <ul></ul>
+      </div>
     `.trim();
-    li.appendChild(childrenContainer);
 
     this.element = {
       li,
@@ -91,8 +112,8 @@ export class TreeNode {
         labelContainer: li.querySelector('.label-container'),
           treeIcon: li.querySelector('.tree-icon'),
           treeLabel: li.querySelector('.tree-label'),
-        childrenContainer,
-          ul
+        childrenContainer: li.querySelector('.children-container'),
+          ul: li.querySelector('.children-container ul')
     }
 
     this.element.expanderContainer.addEventListener('click', () => {
@@ -103,6 +124,14 @@ export class TreeNode {
       this.selected.value = !this.selected.value;
     });
   }
+
+  // method for applying an action on each child
+  throughChildren(callback) {
+    for (const child of this.children.value) {
+      callback(child);
+      child.throughChildren(callback);
+    }
+  }
 }
 
 export class Tree {
@@ -110,8 +139,14 @@ export class Tree {
   selectedNodes;
 
   constructor(content) {
-    this.content = content;
-    this.content.tree.value = this;
+    this.setContent(content);
     this.selectedNodes = [];
+  }
+
+  setContent(content) {
+    if (content) {
+      this.content = content;
+      this.content.tree.value = this;
+    }
   }
 }
