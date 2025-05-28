@@ -16,11 +16,32 @@ class BindedProperty {
     this._value = newVal;
   }
 
-  push(...items) {
+  add(item) {
     if (Array.isArray(this._value)) {
-      this._value.push(...items);
+      this._value.push(item);
       if (this.onChange)
-        this.onChange(this._value);
+        this.onChange(this._value, item);
+    }
+  }
+
+  addD(item) {
+    if (Array.isArray(this._value)) {
+      if (!this._value.includes(item))
+        this.add(item);
+    }
+  }
+
+  delete(item) {
+    if (Array.isArray(this._value)) {
+      this._value = this._value.filter(val => val !== item);
+      if (this.onChange)
+        this.onChange(this._value, item);
+    }
+  }
+
+  clear() {
+    if (Array.isArray(this._value)) {
+      this._value.forEach(val => this.delete(val));
     }
   }
 }
@@ -56,16 +77,13 @@ export class TreeNode {
     
     this.parent = new BindedProperty(null, val => {
       const oldParent = this.parent?._value;
-      if (oldParent) {
-        oldParent.children.value = oldParent.children.value.filter(child => child !== this);
-      }
-      if (val) {
-        if (!val.children.value.includes(this))
-          val.children.push(this);
-      }
-      else {
+      if (oldParent)
+        oldParent.children.delete(this);
+
+      if (val)
+        val.children.addD(this);
+      else if (oldParent)
         this.element.li.remove();
-      }
     });
     
     this.label = new BindedProperty(label, val => {
@@ -82,15 +100,6 @@ export class TreeNode {
 
     this.selected = new BindedProperty(false, val => {
       this.element.treeNode.dataset.selected = val;
-
-      if (val) {
-        if (!this.tree.selectedNodes.includes(this)) this.tree.selectedNodes.push(this);
-      }
-      else
-        this.tree.selectedNodes = this.tree.selectedNodes.filter(i => i !== this);
-      
-      if (this.selected)
-        console.log(this.tree.selectedNodes.map(s => s.label.value));
     });
   }
 
@@ -131,11 +140,51 @@ export class TreeNode {
 
     // setting up a listener for clicking on the node for selecting/deselecting
     this.element.labelContainer.addEventListener('click', () => {
-      this.selected.value = !this.selected.value;
+      if (this.selected.value)
+        this.tree.selectedNodes.delete(this);
+      else {
+        this.throughParents(par => {
+          if (par.selected.value)
+            this.tree.selectedNodes.delete(par);
+        });
+        this.throughChildren(child => {
+          if (child.selected.value)
+            this.tree.selectedNodes.delete(child);
+        });
+        
+        this.tree.selectedNodes.addD(this);
+      }
     });
   }
 
-  // method for applying an action on each child
+  parents() {
+    const allParents = [];
+    let currentNode = this;
+    while (currentNode.parent.value) {
+      currentNode = currentNode.parent.value;
+      allParents.push(currentNode);
+    }
+    return allParents;
+  }
+  childrens() {
+    const allChildren = [];
+    function collectChildren(node) {
+      for (const child of node.children.value) {
+        allChildren.push(child);
+        collectChildren(child);
+      }
+    }
+    collectChildren(this);
+    return allChildren;
+  }
+
+  throughParents(callback) {
+    let currentNode = this.parent.value;
+    while (currentNode) {
+      callback(currentNode);
+      currentNode = currentNode.parent.value;
+    }
+  }
   throughChildren(callback) {
     for (const child of this.children.value) {
       callback(child);
@@ -149,7 +198,10 @@ export class Tree {
   content;
 
   constructor(content) {
-    this.selectedNodes = [];
+    this.selectedNodes = new BindedProperty([], (val, item) => {
+      if (item)
+        item.selected.value = val.includes(item);
+    });
     this.content = content;
   }
 }
