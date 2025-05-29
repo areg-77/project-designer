@@ -147,9 +147,9 @@ export class TreeNode {
       if (!(this.tree.ctrlCmdPressed || this.tree.shiftPressed))
         this.tree.selectedNodes.clear(this.tree.selectedNodes.value.length > 1 ? null : this);
 
-      if (this.tree.shiftPressed) {
+      if (this.tree.shiftPressed && this.parent.value) {
         const siblings = this.parent.value.children.value;
-        const beginIndex = siblings.indexOf(this.tree.selectedNodes.value.at(-1));
+        const beginIndex = siblings.indexOf(this.tree.lastSelectedItem);
         const endIndex = siblings.indexOf(this);
 
         if (beginIndex !== -1 && endIndex !== -1) {
@@ -220,8 +220,10 @@ export class TreeNode {
 
 export class Tree {
   element;
-  selectedNodes;
   content;
+
+  selectedNodes;
+  lastSelectedItem
 
   ctrlCmdPressed;
   shiftPressed;
@@ -248,9 +250,12 @@ export class Tree {
       }
     });
 
+    this.lastSelectedItem = null;
     this.selectedNodes = new BindedProperty([], (val, item) => {
-      if (item)
+      if (item) {
         item.selected.value = val.includes(item);
+        this.lastSelectedItem = item;
+      }
       
       console.log(this.selectedNodes?.value.map(s => s.label.value));
     });
