@@ -7,8 +7,8 @@ const isMac = process.platform === 'darwin';
 function createMainWindow() {
   const win = new BrowserWindow({
     show: false,
-    width: 800,
-    height: 550,
+    width: 1080,
+    height: 600,
     useContentSize: true,
     backgroundColor: '#151515',
     title: 'Project Designer',
@@ -26,6 +26,7 @@ function createMainWindow() {
     ...(isMac ? [{ role: 'appMenu' }] : []),
     { role: 'fileMenu' },
     { role: 'editMenu' },
+    { role: 'viewMenu' },
     {
       label: 'Developer',
       submenu: [

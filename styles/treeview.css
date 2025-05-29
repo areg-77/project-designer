@@ -4,6 +4,8 @@
   border-radius: 8px;
   padding: 2px;
   font-size: 14px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 .treeview:focus {
   outline: none;
@@ -89,10 +91,17 @@
   width: 100%;
   padding: 3px 0px;
   display: flex;
+  overflow: hidden;
   align-items: center;
   gap: 0.3em;
 }
 
 .tree-icon {
   height: 1.225em;
+}
+
+.tree-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

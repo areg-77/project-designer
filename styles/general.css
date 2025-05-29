@@ -5,9 +5,22 @@
   font-style: normal;
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
 body {
   font-family: "Funnel Sans", "Segoe UI";
   color: #ddd;
-  padding: 40px;
+  padding: 10px;
+  box-sizing: border-box;
   user-select: none;
+}
+
+.maingrid {
+  display: grid;
+  grid-template-columns: 0.55fr 0.45fr;
+  height: 100%;
 }
