@@ -1,4 +1,4 @@
-import { Tree, TreeNode } from './model/treenode.js';
+import { Tree, TreeNode, BindedProperty, TreeData } from './model/treenode.js';
 
 const treeObject =  {
   label: 'Project',
@@ -118,10 +118,6 @@ const treeObject =  {
     }
   ]
 }
-
-const tree = new Tree('.treeview');
-tree.content.value = buildTree(treeObject);
-
 function buildTree(obj) {
   const node = new TreeNode(tree, obj.label, obj.type);
 
@@ -133,6 +129,16 @@ function buildTree(obj) {
   return node;
 }
 
+let selectedNodes = new BindedProperty([], val => {
+  // document.getElementById('node-label').value = val.map(s => s.label.value);
+});
+
+const tree = new Tree('.treeview', selectedNodes);
+tree.content.value = buildTree(treeObject);
+
+const treeData = new TreeData('')
+
+// temp area
 console.log(tree);
 window.TreeNode = TreeNode;
 window.tree = tree;

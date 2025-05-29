@@ -1,4 +1,4 @@
-class BindedProperty {
+export class BindedProperty {
   constructor(value, onChange) {
     this.onChange = onChange;
     if (this.onChange)
@@ -228,7 +228,7 @@ export class Tree {
   ctrlCmdPressed;
   shiftPressed;
 
-  constructor(treeElementClass) {
+  constructor(treeElementClass, data) {
     this.element = document.querySelector(treeElementClass);
     this.element.setAttribute('tabindex', '0');
     
@@ -255,9 +255,10 @@ export class Tree {
       if (item) {
         item.selected.value = val.includes(item);
         this.lastSelectedItem = item;
+
+        if (exportSelectedNodes.value)
+          exportSelectedNodes.value = [...val];
       }
-      
-      console.log(this.selectedNodes?.value.map(s => s.label.value));
     });
 
     this.content = new BindedProperty(null, val => {
@@ -268,5 +269,13 @@ export class Tree {
         this.element.appendChild(val.element.li);
       }
     });
+  }
+}
+
+export class TreeData {
+  element;
+
+  constructor(dataElementClass) {
+    this.element = document.querySelector(dataElementClass);
   }
 }

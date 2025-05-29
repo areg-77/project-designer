@@ -22,5 +22,6 @@ body {
 .maingrid {
   display: grid;
   grid-template-columns: 0.55fr 0.45fr;
+  gap: 10px;
   height: 100%;
 }
