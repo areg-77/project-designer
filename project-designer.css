@@ -32,9 +32,11 @@ body {
   grid-template-rows: 0fr;
   opacity: 0;
 
-  transition: grid-template-rows 0.25s, opacity 0.5s;
+  transition: grid-template-rows 0.25s, opacity 0.5s ease 0s;
 }
 .tree-node[data-expanded="true"] + .children-container {
+  transition-delay: 0s, 0.05s;
+
   grid-template-rows: 1fr;
   opacity: 1;
 }

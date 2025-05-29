@@ -143,12 +143,29 @@ export class TreeNode {
 
     // setting up a listener for clicking on the node for selecting/deselecting
     this.element.labelContainer.addEventListener('click', () => {
-      if (!this.tree.ctrlCmdPressed)
+      const select = !this.selected.value;
+      if (!(this.tree.ctrlCmdPressed || this.tree.shiftPressed))
         this.tree.selectedNodes.clear(this.tree.selectedNodes.value.length > 1 ? null : this);
 
-      if (this.selected.value)
-        this.tree.selectedNodes.delete(this);
-      else {
+      if (this.tree.shiftPressed) {
+        const siblings = this.parent.value.children.value;
+        const beginIndex = siblings.indexOf(this.tree.selectedNodes.value.at(-1));
+        const endIndex = siblings.indexOf(this);
+
+        if (beginIndex !== -1 && endIndex !== -1) {
+          const [start, stop] = beginIndex < endIndex ? [beginIndex, endIndex] : [endIndex, beginIndex];
+          for (let i = start; i <= stop; i++) {
+            if (select)
+              this.tree.selectedNodes.addD(siblings[i]);
+            else
+              this.tree.selectedNodes.delete(siblings[i]);
+          }
+        }
+        else
+          this.tree.selectedNodes.clear();
+      }
+
+      if (select) {
         this.throughParents(par => {
           if (par.selected.value)
             this.tree.selectedNodes.delete(par);
@@ -157,9 +174,11 @@ export class TreeNode {
           if (child.selected.value)
             this.tree.selectedNodes.delete(child);
         });
-        
+
         this.tree.selectedNodes.addD(this);
       }
+      else
+        this.tree.selectedNodes.delete(this);
     });
   }
 
@@ -205,22 +224,23 @@ export class Tree {
   content;
 
   ctrlCmdPressed;
+  shiftPressed;
 
   constructor(treeElementClass) {
     this.element = document.querySelector(treeElementClass);
     this.element.setAttribute('tabindex', '0');
     
     this.element.addEventListener('keydown', (e) => {
-      if (e.ctrlKey || e.metaKey)
-        this.ctrlCmdPressed = true;
+      this.ctrlCmdPressed = e.ctrlKey || e.metaKey;
+      this.shiftPressed = e.shiftKey;
     });
     this.element.addEventListener('keyup', (e) => {
-      if (!(e.ctrlKey || e.metaKey))
-        this.ctrlCmdPressed = false;
+      this.ctrlCmdPressed = e.ctrlKey || e.metaKey;
+      this.shiftPressed = e.shiftKey;
     });
 
     this.element.addEventListener('click', (e) => {
-      if (!this.ctrlCmdPressed) {
+      if (!(this.ctrlCmdPressed || this.shiftPressed)) {
         const clickedNode = e.target.closest('.tree-node');
 
         if (!clickedNode)

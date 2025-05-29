@@ -71,6 +71,46 @@ const treeObject =  {
               label: 'sfx.dll',
               type: 'file',
               children: []
+            },
+            {
+              label: 'textures.dll',
+              type: 'file',
+              children: []
+            },
+            {
+              label: 'models.dll',
+              type: 'file',
+              children: []
+            },
+            {
+              label: 'environment.dll',
+              type: 'file',
+              children: []
+            },
+            {
+              label: 'lights.dll',
+              type: 'file',
+              children: []
+            },
+            {
+              label: 'shadows.dll',
+              type: 'file',
+              children: []
+            },
+            {
+              label: 'low-lod.dll',
+              type: 'file',
+              children: []
+            },
+            {
+              label: 'normal-lod.dll',
+              type: 'file',
+              children: []
+            },
+            {
+              label: 'high-lod.dll',
+              type: 'file',
+              children: []
             }
           ]
         }
