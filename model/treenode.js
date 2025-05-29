@@ -39,9 +39,12 @@ class BindedProperty {
     }
   }
 
-  clear() {
+  clear(excludeItem) {
     if (Array.isArray(this._value)) {
-      this._value.forEach(val => this.delete(val));
+      [...this._value].forEach(val => {
+        if (val !== excludeItem)
+          this.delete(val);
+      });
     }
   }
 }
@@ -140,6 +143,9 @@ export class TreeNode {
 
     // setting up a listener for clicking on the node for selecting/deselecting
     this.element.labelContainer.addEventListener('click', () => {
+      if (!this.tree.ctrlCmdPressed)
+        this.tree.selectedNodes.clear(this.tree.selectedNodes.value.length > 1 ? null : this);
+
       if (this.selected.value)
         this.tree.selectedNodes.delete(this);
       else {
@@ -194,14 +200,48 @@ export class TreeNode {
 }
 
 export class Tree {
+  element;
   selectedNodes;
   content;
 
-  constructor(content) {
+  ctrlCmdPressed;
+
+  constructor(treeElementClass) {
+    this.element = document.querySelector(treeElementClass);
+    this.element.setAttribute('tabindex', '0');
+    
+    this.element.addEventListener('keydown', (e) => {
+      if (e.ctrlKey || e.metaKey)
+        this.ctrlCmdPressed = true;
+    });
+    this.element.addEventListener('keyup', (e) => {
+      if (!(e.ctrlKey || e.metaKey))
+        this.ctrlCmdPressed = false;
+    });
+
+    this.element.addEventListener('click', (e) => {
+      if (!this.ctrlCmdPressed) {
+        const clickedNode = e.target.closest('.tree-node');
+
+        if (!clickedNode)
+          this.selectedNodes.clear(null);
+      }
+    });
+
     this.selectedNodes = new BindedProperty([], (val, item) => {
       if (item)
         item.selected.value = val.includes(item);
+      
+      console.log(this.selectedNodes?.value.map(s => s.label.value));
     });
-    this.content = content;
+
+    this.content = new BindedProperty(null, val => {
+      if (val) {
+        while (this.element.firstChild) {
+          this.element.removeChild(this.element.firstChild);
+        }
+        this.element.appendChild(val.element.li);
+      }
+    });
   }
 }

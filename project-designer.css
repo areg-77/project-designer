@@ -19,6 +19,9 @@ body {
   padding: 2px;
   font-size: 14px;
 }
+.treeview:focus {
+  outline: none;
+}
  
 .treeview li {
   list-style: none;

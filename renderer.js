@@ -84,8 +84,8 @@ const treeObject =  {
   ]
 }
 
-const tree = new Tree();
-tree.content = buildTree(treeObject);
+const tree = new Tree('.treeview');
+tree.content.value = buildTree(treeObject);
 
 function buildTree(obj) {
   const node = new TreeNode(tree, obj.label, obj.type);
@@ -98,7 +98,6 @@ function buildTree(obj) {
   return node;
 }
 
-document.querySelector('.treeview').appendChild(tree.content.element.li);
 console.log(tree);
 window.TreeNode = TreeNode;
 window.tree = tree;
