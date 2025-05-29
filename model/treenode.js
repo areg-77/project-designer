@@ -228,7 +228,7 @@ export class Tree {
   ctrlCmdPressed;
   shiftPressed;
 
-  constructor(treeElementClass, data) {
+  constructor(treeElementClass, treeData) {
     this.element = document.querySelector(treeElementClass);
     this.element.setAttribute('tabindex', '0');
     
@@ -256,8 +256,8 @@ export class Tree {
         item.selected.value = val.includes(item);
         this.lastSelectedItem = item;
 
-        if (exportSelectedNodes.value)
-          exportSelectedNodes.value = [...val];
+        if (treeData)
+          treeData.selectedNodes.value = [...val];
       }
     });
 
@@ -272,10 +272,38 @@ export class Tree {
   }
 }
 
+function toCamelCase(str) {
+  return str
+    .toLowerCase()
+    .replace(/[^a-zA-Z0-9]+(.)/g, (_, chr) => chr.toUpperCase());
+}
+
 export class TreeData {
   element;
+  selectedNodes;
 
-  constructor(dataElementClass) {
-    this.element = document.querySelector(dataElementClass);
+  constructor(dataElementClass, dataTemplate) {
+    this.element = { data: document.querySelector(dataElementClass) };
+    this.#generateHTML(dataTemplate);
+
+    this.selectedNodes = new BindedProperty([], val => {
+      dataTemplate.forEach(({ property, value }) => {
+        const content = val.length > 0 ? value(val) : '';
+        this.element[toCamelCase(property)].innerHTML = content;
+      });
+    });
+  }
+
+  #generateHTML(dataTemplate) {
+    dataTemplate.forEach(({ property }) => {
+      const dataField = document.createElement('div');
+      dataField.classList.add('data-field');
+      dataField.innerHTML = `
+        ${property}:<div id="${toCamelCase(property)}-data"></div>
+      `.trim();
+      
+      this.element[toCamelCase(property)] = dataField.querySelector(`#${toCamelCase(property)}-data`);
+      this.element.data.appendChild(dataField);
+    });
   }
 }

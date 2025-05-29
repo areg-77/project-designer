@@ -2,6 +2,16 @@
   background-color: #1e1e1e;
   border: 1px solid #404040;
   border-radius: 8px;
-  padding: 2px;
+  padding: 20px;
   font-size: 14px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.data-field {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
 }
