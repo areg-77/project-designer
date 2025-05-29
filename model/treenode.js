@@ -143,9 +143,9 @@ export class TreeNode {
 
     // setting up a listener for clicking on the node for selecting/deselecting
     this.element.labelContainer.addEventListener('click', () => {
-      const select = !this.selected.value;
       if (!(this.tree.ctrlCmdPressed || this.tree.shiftPressed))
         this.tree.selectedNodes.clear(this.tree.selectedNodes.value.length > 1 ? null : this);
+      const select = !this.selected.value;
 
       if (this.tree.shiftPressed && this.parent.value) {
         const siblings = this.parent.value.children.value;
