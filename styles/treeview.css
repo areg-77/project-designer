@@ -1,6 +1,6 @@
 .treeview {
   background-color: #1e1e1e;
-  border: 1px solid #383838;
+  border: 1px solid #404040;
   border-radius: 8px;
   padding: 2px;
   font-size: 14px;
@@ -18,25 +18,31 @@
   grid-template-rows: 0fr;
   opacity: 0;
 
-  transition: grid-template-rows 0.25s, opacity 0.5s ease 0s;
+  margin: 0px 1px 0px 1em;
+  border-left: 1px solid #2c2c2c;
+
+  transition: opacity 0.5s ease 0s, grid-template-rows 0.25s, border-color 0.35s ease 0.1s;
 }
 .tree-node[data-expanded="true"] + .children-container {
-  transition-delay: 0s, 0.05s;
+  transition-delay: 0.05s;
 
   grid-template-rows: 1fr;
   opacity: 1;
 }
+.treeview li:hover > .children-container {
+  border-color: #4e4e4e;
+}
 
 .treeview ul {
   overflow: hidden;
-  margin: 0px 0px 0px 1em;
+  margin: 0px 0px 0px 0px;
   padding: 0px 0px 0px 1em;
-  border-left: 1px solid #2c2c2c;
+  border-radius: 0px 5px 5px 0px;
 
-  transition: border-color 0.35s ease;
+  transition: background-color 0.3s ease 0.1s;
 }
-.treeview li:hover > .children-container > ul {
-  border-color: #4e4e4e;
+.tree-node[data-selected="true"] + .children-container > ul {
+  background-color: #232323;
 }
 
 .tree-node {
@@ -44,14 +50,14 @@
   margin: 1px;
   border-radius: 5px;
 
-  transition: background-color 0.2s;
+  transition: background-color 0.25s;
 }
 .tree-node:hover {
-  background-color: #272727;
-  outline: 1px solid #383838;
+  background-color: #292929;
+  outline: 1px solid #404040;
 }
 .tree-node[data-selected="true"] {
-  background-color: #303030;
+  background-color: #333;
 }
 
 .expander-container {
