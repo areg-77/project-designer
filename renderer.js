@@ -59,59 +59,54 @@ const treeObject =  {
           children: []
         },
         {
-          label: 'for-mac',
+          label: 'versions-sandbox',
           type: 'folder',
           children: [
             {
-              label: 'graphics.dll',
+              label: 'file_test_v001.fbx',
               type: 'file',
               children: []
             },
             {
-              label: 'sfx.dll',
+              label: 'file_test_v002.fbx',
               type: 'file',
               children: []
             },
             {
-              label: 'textures.dll',
+              label: 'file_test_v003.fbx',
               type: 'file',
               children: []
             },
             {
-              label: 'models.dll',
+              label: 'file_test_v004.fbx',
               type: 'file',
               children: []
             },
             {
-              label: 'environment.dll',
+              label: 'file_test_v005.fbx',
               type: 'file',
               children: []
             },
             {
-              label: 'lights.dll',
+              label: 'file_test_v006.fbx',
               type: 'file',
               children: []
             },
             {
-              label: 'shadows.dll',
+              label: 'file_test_v007.fbx',
               type: 'file',
               children: []
             },
             {
-              label: 'low-lod.dll',
+              label: 'file_test_v008.fbx',
               type: 'file',
               children: []
             },
             {
-              label: 'normal-lod.dll',
+              label: 'file_test_v009.fbx',
               type: 'file',
               children: []
             },
-            {
-              label: 'high-lod.dll',
-              type: 'file',
-              children: []
-            }
           ]
         }
       ]
