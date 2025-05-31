@@ -57,7 +57,7 @@ export class TreeNode {
       this.element.treeLabel.textContent = val;
     });
     this.type = new BindedProperty(type, val => {
-      this.element.treeIcon.src = `./icons/${val}-icon.svg`;
+      this.element.treeIcon.src = `assets/icons/${val}-icon.svg`;
     });
     this.expanded = new BindedProperty(false, val => {
       this.element.treeNode.dataset.expanded = val;

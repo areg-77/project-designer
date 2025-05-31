@@ -76,7 +76,7 @@ function createMainWindow() {
     contextMenu.popup(win);
   });
 
-  win.loadFile('index.html');
+  win.loadFile('src/index.html');
 }
 
 app.on('ready', () => {

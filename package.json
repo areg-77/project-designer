@@ -1,15 +1,15 @@
 {
   "name": "project-designer",
   "version": "1.0.0",
-  "description": "",
+  "description": "Project designing tool",
   "license": "MIT",
-  "author": "Areg",
+  "author": "areg-77",
   "type": "commonjs",
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
-    "start": "electron .",
-    "childrentest": "node ./tests/children-test.js",
-    "multipletest": "node ./tests/multiple-selected-test.js"
+    "launch": "electron .",
+    "childrentest": "node src/tests/children-test.js",
+    "multipletest": "node src/tests/multiple-selected-test.js"
   },
   "devDependencies": {
     "electron": "^36.3.1"
