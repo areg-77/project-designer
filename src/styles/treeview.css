@@ -23,7 +23,7 @@
   margin: 0px 1px 0px 1em;
   border-left: 1px solid #2c2c2c;
 
-  transition: grid-template-rows 250ms cubic-bezier(0.5, 0, 0, 1), border-color 350ms ease 100ms, opacity 500ms ease 0s;
+  transition: grid-template-rows 250ms cubic-bezier(0.33, 0.13, 0.19, 1), border-color 350ms 100ms, opacity 500ms;
 }
 .tree-node[data-expanded="true"] + .children-container {
   grid-template-rows: 1fr;
@@ -39,10 +39,10 @@
   padding: 0px 0px 0px 1em;
   border-radius: 0px 5px 5px 0px;
 
-  transition: background-color 300ms ease 100ms;
+  transition: background-color 300ms 100ms;
 }
 .tree-node[data-selected="true"] + .children-container > ul {
-  background-color: #232323;
+  background-color: #242424;
 }
 
 .tree-node {
