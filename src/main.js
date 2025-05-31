@@ -35,7 +35,10 @@ function createMainWindow() {
           label: 'Screenshot',
           accelerator: 'f2',
           click: () => {
-            const screenshotsFolder = path.join(__dirname, 'screenshots');
+            const screenshotsFolder = path.join(__dirname, '..', 'screenshots');
+
+            if (!fs.existsSync(screenshotsFolder))
+              fs.mkdirSync(screenshotsFolder, { recursive: true });
 
             // get list of existing screenshots matching "screenshot_N.png"
             const files = fs.readdirSync(screenshotsFolder);
