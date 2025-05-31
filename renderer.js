@@ -62,51 +62,16 @@ const treeObject =  {
           label: 'versions-sandbox',
           type: 'folder',
           children: [
-            {
-              label: 'file_test_v001.fbx',
+            ...Array.from({ length: 5 }, (_, i) => ({
+              label: `file_test_v${String(i + 1).padStart(3, '0')}.fbx`,
               type: 'file',
               children: []
-            },
-            {
-              label: 'file_test_v002.fbx',
+            })),
+            ...Array.from({ length: 5 }, (_, i) => ({
+              label: `file_abcd_v${String(i + 1).padStart(3, '0')}.fbx`,
               type: 'file',
               children: []
-            },
-            {
-              label: 'file_test_v003.fbx',
-              type: 'file',
-              children: []
-            },
-            {
-              label: 'file_test_v004.fbx',
-              type: 'file',
-              children: []
-            },
-            {
-              label: 'file_test_v005.fbx',
-              type: 'file',
-              children: []
-            },
-            {
-              label: 'file_test_v006.fbx',
-              type: 'file',
-              children: []
-            },
-            {
-              label: 'file_test_v007.fbx',
-              type: 'file',
-              children: []
-            },
-            {
-              label: 'file_test_v008.fbx',
-              type: 'file',
-              children: []
-            },
-            {
-              label: 'file_test_v009.fbx',
-              type: 'file',
-              children: []
-            },
+            }))
           ]
         }
       ]

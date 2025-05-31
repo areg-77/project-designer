@@ -184,10 +184,10 @@ export class TreeNode {
 
   parents() {
     const allParents = [];
-    let currentNode = this;
-    while (currentNode.parent.value) {
-      currentNode = currentNode.parent.value;
+    let currentNode = this.parent.value;
+    while (currentNode) {
       allParents.push(currentNode);
+      currentNode = currentNode.parent.value;
     }
     return allParents;
   }

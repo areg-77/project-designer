@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Protected Rename</title>
+<style>
+  #filename {
+    width: 300px;
+    padding: 6px;
+    border: 1px solid #ccc;
+    font-family: monospace;
+    font-size: 16px;
+    white-space: pre-wrap;
+    outline: none;
+    border-radius: 4px;
+  }
+  .highlight-protected {
+    background-color: lightgray;
+    color: black;
+  }
+</style>
+</head>
+<body>
+
+<label for="filename">Rename file:</label><br>
+<div id="filename" contenteditable="true" spellcheck="false">file_#_new_v00#.txt</div>
+
+<script>
+  const editableDiv = document.getElementById('filename');
+
+  // Change this to your protected character
+  let protectedChar = '#';
+
+  // Escape special regex characters in protectedChar for regex usage
+  function escapeRegex(char) {
+    return char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  // Function to wrap protectedChar with span for styling
+  function highlightProtectedChars(text) {
+    const escapedChar = escapeRegex(protectedChar);
+    const regex = new RegExp(escapedChar, 'g');
+    return text.replace(regex, `<span class="highlight-protected">${protectedChar}</span>`);
+  }
+
+  // Caret position helper functions (same as before)
+  function saveCaretPosition(context) {
+    const selection = window.getSelection();
+    if (selection.rangeCount === 0) return null;
+    const range = selection.getRangeAt(0);
+    const preSelectionRange = range.cloneRange();
+    preSelectionRange.selectNodeContents(context);
+    preSelectionRange.setEnd(range.startContainer, range.startOffset);
+    const start = preSelectionRange.toString().length;
+    return start;
+  }
+
+  function restoreCaretPosition(context, pos) {
+    const nodeStack = [context];
+    let node, charsCount = 0, found = false;
+    let range = document.createRange();
+    range.setStart(context, 0);
+    range.collapse(true);
+
+    while (!found && (node = nodeStack.pop())) {
+      if (node.nodeType === 3) { // text node
+        const nextCharsCount = charsCount + node.length;
+        if (pos <= nextCharsCount) {
+          range.setStart(node, pos - charsCount);
+          range.collapse(true);
+          found = true;
+        } else {
+          charsCount = nextCharsCount;
+        }
+      } else {
+        let i = node.childNodes.length;
+        while (i--) {
+          nodeStack.push(node.childNodes[i]);
+        }
+      }
+    }
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+
+  // Initialize last valid states
+  let lastValidText = editableDiv.textContent;
+  let lastValidCaretPos = editableDiv.textContent.length;
+
+  // Initial highlight
+  editableDiv.innerHTML = highlightProtectedChars(editableDiv.textContent);
+
+  editableDiv.addEventListener('input', () => {
+    const caretPos = saveCaretPosition(editableDiv);
+    const text = editableDiv.textContent;
+
+    // Count protectedChar occurrences
+    const protectedCharCount = (text.match(new RegExp(escapeRegex(protectedChar), 'g')) || []).length;
+    const expectedCount = (lastValidText.match(new RegExp(escapeRegex(protectedChar), 'g')) || []).length;
+
+    // If count changed, revert
+    if (protectedCharCount !== expectedCount) {
+      editableDiv.innerHTML = highlightProtectedChars(lastValidText);
+      restoreCaretPosition(editableDiv, lastValidCaretPos);
+      return;
+    }
+
+    // Update last valid states and highlight
+    lastValidText = text;
+    lastValidCaretPos = caretPos;
+    editableDiv.innerHTML = highlightProtectedChars(text);
+    restoreCaretPosition(editableDiv, caretPos);
+  });
+</script>
+
+</body>
+</html>
