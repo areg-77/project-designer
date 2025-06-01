@@ -16,6 +16,7 @@ function createMainWindow() {
       preload: path.join(__dirname, 'preload.js')
     }
   });
+  win.loadFile('src/index.html');
 
   win.once('ready-to-show', () => {
     win.show();
@@ -78,8 +79,6 @@ function createMainWindow() {
   win.webContents.on('context-menu', (e, props) => {
     contextMenu.popup(win);
   });
-
-  win.loadFile('src/index.html');
 }
 
 app.on('ready', () => {
