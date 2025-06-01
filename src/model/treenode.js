@@ -49,6 +49,10 @@ export class BindedProperty {
   }
 }
 
+function toCamelCase(str) {
+  return str.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (_, ch) => ch.toUpperCase());
+}
+
 const iconPath = {
   file: 'M240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h287q16 0 30.5 6t25.5 17l194 194q11 11 17 25.5t6 30.5v447q0 33-23.5 56.5T720-80H240Zm280-560q0 17 11.5 28.5T560-600h160L520-800v160Z',
   folder: 'M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h207q16 0 30.5 6t25.5 17l57 57h320q33 0 56.5 23.5T880-640v400q0 33-23.5 56.5T800-160H160Z'
@@ -70,17 +74,38 @@ export class TreeNode {
     this.tree = tree;
     this.#generateHTML();
 
+    this.label = new BindedProperty(label, val => {
+      this.element.treeLabel.textContent = val;
+    });
+
+    this.type = new BindedProperty(type, val => {
+      this.element.treeIcon.setAttribute('d', iconPath[val]);
+    });
+    
+    this.expanded = new BindedProperty(true, val => {
+      this.element.treeNode.dataset.expanded = val;
+    });
+
+    this.selected = new BindedProperty(false, val => {
+      this.element.treeNode.dataset.selected = val;
+    });
+
     this.children = new BindedProperty([], val => {
       if (val.length > 0) {
+        this.expanded.value = true;
         this.element.expanderContainer.classList.remove('hidden');
         this.element.ul.innerHTML = '';
 
+        // adding each node to html
         val.forEach(child => {
           this.element.ul.appendChild(child.element.li);
         });
       }
-      else
+      else {
+        this.expanded.value = false;
         this.element.expanderContainer.classList.add('hidden');
+        this.element.ul.innerHTML = '';
+      }
     });
     
     this.parent = new BindedProperty(null, val => {
@@ -90,24 +115,8 @@ export class TreeNode {
 
       if (val)
         val.children.addD(this);
-      else if (oldParent)
-        this.element.li.remove();
-    });
-    
-    this.label = new BindedProperty(label, val => {
-      this.element.treeLabel.textContent = val;
-    });
-
-    this.type = new BindedProperty(type, val => {
-      this.element.treeIcon.setAttribute('d', iconPath[type]);
-    });
-
-    this.expanded = new BindedProperty(true, val => {
-      this.element.treeNode.dataset.expanded = val;
-    });
-
-    this.selected = new BindedProperty(false, val => {
-      this.element.treeNode.dataset.selected = val;
+      // else if (oldParent)
+      //   this.element.li.remove();
     });
   }
 
@@ -143,12 +152,12 @@ export class TreeNode {
           ul: li.querySelector('.children-container ul')
     }
 
-    // setting up a listener for clicking on the expander for expanding/collapsing
+    // listener for expanding/collapsing
     this.element.expanderContainer.addEventListener('click', () => {
       this.expanded.value = !this.expanded.value;
     });
 
-    // setting up a listener for clicking on the node for selecting/deselecting
+    // listener for selecting/deselecting
     this.element.labelContainer.addEventListener('click', () => {
       if (!(this.tree.ctrlCmdPressed || this.tree.shiftPressed))
         this.tree.selectedNodes.clear(this.tree.selectedNodes.value.length > 1 ? null : this);
@@ -177,7 +186,7 @@ export class TreeNode {
           if (par.selected.value)
             this.tree.selectedNodes.delete(par);
         });
-        this.throughChildren(child => {
+        this.throughChildrens(child => {
           if (child.selected.value)
             this.tree.selectedNodes.delete(child);
         });
@@ -217,12 +226,15 @@ export class TreeNode {
       currentNode = currentNode.parent.value;
     }
   }
-  throughChildren(callback) {
+  throughChildrens(callback) {
     for (const child of this.children.value) {
       callback(child);
-      child.throughChildren(callback);
+      child.throughChildrens(callback);
     }
   }
+
+  path = () => `${this.parent.value?.path() ?? '..'}/${this.label.value}`;
+  dom = () => this.parent.value ? `${this.parent.value.dom()}.children.value[${this.parent.value.children.value.indexOf(this)}]` : 'tree.content.value';
 }
 
 export class Tree {
@@ -235,10 +247,12 @@ export class Tree {
   ctrlCmdPressed;
   shiftPressed;
 
+  // initializing the tree
   constructor(treeElementClass, treeData) {
     this.element = document.querySelector(treeElementClass);
     this.element.setAttribute('tabindex', '0');
     
+    // listener for holding ctrl/command or shift
     this.element.addEventListener('keydown', (e) => {
       this.ctrlCmdPressed = e.ctrlKey || e.metaKey;
       this.shiftPressed = e.shiftKey;
@@ -247,7 +261,12 @@ export class Tree {
       this.ctrlCmdPressed = e.ctrlKey || e.metaKey;
       this.shiftPressed = e.shiftKey;
     });
+    window.addEventListener('blur', () => {
+      this.ctrlCmdPressed = false;
+      this.shiftPressed = false;
+    });
 
+    // deselecting once clicked away
     this.element.addEventListener('click', (e) => {
       if (!(this.ctrlCmdPressed || this.shiftPressed)) {
         const clickedNode = e.target.closest('.tree-node');
@@ -260,57 +279,78 @@ export class Tree {
     this.lastSelectedItem = null;
     this.selectedNodes = new BindedProperty([], (val, item) => {
       if (item) {
+        // selecting the node if its in the selectedNodes
         item.selected.value = val.includes(item);
         this.lastSelectedItem = item;
 
+        // sending to treeData
         if (treeData)
           treeData.selectedNodes.value = [...val];
       }
     });
 
+    // content (first TreeNode)
     this.content = new BindedProperty(null, val => {
       if (val) {
-        while (this.element.firstChild) {
+        while (this.element.firstChild)
           this.element.removeChild(this.element.firstChild);
-        }
         this.element.appendChild(val.element.li);
       }
     });
   }
 }
 
-function toCamelCase(str) {
-  return str
-    .toLowerCase()
-    .replace(/[^a-zA-Z0-9]+(.)/g, (_, chr) => chr.toUpperCase());
-}
-
 export class TreeData {
   element;
   selectedNodes;
 
+  // initializing the treeData
   constructor(dataElementClass, dataTemplate) {
     this.element = { data: document.querySelector(dataElementClass) };
     this.#generateHTML(dataTemplate);
 
+    // updating the values of each dataField
     this.selectedNodes = new BindedProperty([], val => {
-      dataTemplate.forEach(({ property, value }) => {
-        const content = val.length > 0 ? value(val) : '';
-        this.element[toCamelCase(property)].innerHTML = content;
+      dataTemplate.forEach(({ property, getValue }) => {
+        const content = val.length > 0 ? getValue(val) : '';
+        this.element[property].innerHTML = content;
       });
     });
   }
 
   #generateHTML(dataTemplate) {
-    dataTemplate.forEach(({ property }) => {
+    dataTemplate.forEach(({ property, setValue }) => {
       const dataField = document.createElement('div');
       dataField.classList.add('data-field');
-      dataField.innerHTML = `
-        ${property}:<div id="${toCamelCase(property)}-data"></div>
-      `.trim();
+      dataField.innerHTML = `<div class="data-label">${property}</div>`.trim();
+
+      const dataValue = document.createElement('div');
+      dataValue.classList.add('data-value');
+
+      if (setValue) {
+        dataValue.contentEditable = true;
+        dataValue.spellcheck = false;
+
+        dataValue.addEventListener('blur', () => {
+          this.selectedNodes.value = this.selectedNodes.value;
+        });
+        dataValue.addEventListener('keydown', e => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            window.getSelection().removeAllRanges();
+
+            setValue(this.selectedNodes.value, dataValue.innerText);
+            dataValue.blur();
+          } else if (e.key === 'Escape') {
+            e.preventDefault();
+            dataValue.blur();
+          }
+        });
+      }
       
-      this.element[toCamelCase(property)] = dataField.querySelector(`#${toCamelCase(property)}-data`);
+      dataField.appendChild(dataValue);
       this.element.data.appendChild(dataField);
+      this.element[property] = dataValue;
     });
   }
 }

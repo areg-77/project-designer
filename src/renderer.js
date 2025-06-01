@@ -97,15 +97,20 @@ function buildTree(obj) {
 const dataTemplate = [
   {
     property: 'Name',
-    value: (nodes) => nodes[0].label.value
-  },
-  {
-    property: 'Type',
-    value: (nodes) => nodes[0].type.value
+    getValue: (nodes) => nodes[nodes.length - 1].label.value,
+    setValue: (nodes, value) => nodes[nodes.length - 1].label.value = value
   },
   {
     property: 'Parent',
-    value: (nodes) => nodes[0].parent.value?.label.value
+    getValue: (nodes) => nodes[nodes.length - 1].parent.value?.label.value
+  },
+  {
+    property: 'Path',
+    getValue: (nodes) => nodes[nodes.length - 1].path()
+  },
+  {
+    property: 'DOM',
+    getValue: (nodes) => nodes[nodes.length - 1].dom()
   }
 ]
 

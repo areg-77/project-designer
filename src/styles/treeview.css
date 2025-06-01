@@ -48,6 +48,7 @@
 
 .tree-node {
   display: flex;
+  flex-shrink: 0;
   margin: 1px;
   border-radius: 5px;
 
@@ -63,6 +64,7 @@
 
 .expander-container {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   width: 2em;
@@ -91,17 +93,18 @@
   width: 100%;
   padding: 3px 0px;
   display: flex;
+  flex-shrink: 0;
   overflow: hidden;
   align-items: center;
   gap: 0.3em;
 }
 
 .tree-icon {
+  flex-shrink: 0;
   height: 1.225em;
 }
 
 .tree-label {
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
 }

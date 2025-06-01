@@ -1,17 +1,57 @@
 .treedata {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  gap: 10px;
+
+  color: var(--foreground-light);
   background-color: var(--region-light);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 20px;
   font-size: 14px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 }
 
 .data-field {
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 1em;
+
+  padding: 0.5em;
+  background-color: var(--region);
+  border: 1px solid var(--border-dark);
+  border-radius: 10px;
+}
+
+.data-label {
+  display: flex;
+  align-items: center;
+  background-color: var(--region-light);
+  padding: 2px 5px;
+  border: 1px solid var(--border-dark);
+  border-radius: 5px;
+}
+
+.data-value {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  
+  width: 100%;
+  height: 1.5em;
+  padding: 0px 0.5em;
+  background-color: var(--region-dark);
+  color: var(--foreground-dark);
+  outline: 1px solid var(--border-dark);
+  border-radius: 5px;
+  font-size: 0.9em;
+
+  transition-property: color, outline-color;
+  transition-duration: 200ms;
+}
+.data-value:focus {
+  outline-color: var(--border);
+  color: var(--foreground);
 }
