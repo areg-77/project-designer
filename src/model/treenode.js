@@ -248,8 +248,8 @@ export class Tree {
   shiftPressed;
 
   // initializing the tree
-  constructor(treeElementClass, treeData) {
-    this.element = document.querySelector(treeElementClass);
+  constructor(treeId, data) {
+    this.element = document.getElementById(treeId);
     this.element.setAttribute('tabindex', '0');
     
     // listener for holding ctrl/command or shift
@@ -261,7 +261,7 @@ export class Tree {
       this.ctrlCmdPressed = e.ctrlKey || e.metaKey;
       this.shiftPressed = e.shiftKey;
     });
-    window.addEventListener('blur', () => {
+    this.element.addEventListener('blur', () => {
       this.ctrlCmdPressed = false;
       this.shiftPressed = false;
     });
@@ -283,9 +283,8 @@ export class Tree {
         item.selected.value = val.includes(item);
         this.lastSelectedItem = item;
 
-        // sending to treeData
-        if (treeData)
-          treeData.selectedNodes.value = [...val];
+        // sending to data
+        data.forEach(d => d.selectedNodes.value = [...val]);
       }
     });
 
@@ -305,8 +304,8 @@ export class TreeData {
   selectedNodes;
 
   // initializing the treeData
-  constructor(dataElementClass, dataTemplate) {
-    this.element = { data: document.querySelector(dataElementClass) };
+  constructor(dataId, dataTemplate) {
+    this.element = { data: document.getElementById(dataId) };
     this.#generateHTML(dataTemplate);
 
     // updating the values of each dataField

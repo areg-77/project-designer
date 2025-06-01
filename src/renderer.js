@@ -83,11 +83,11 @@ const treeObject =  {
     }
   ]
 }
-function buildTree(obj) {
+function buildTree(tree, obj) {
   const node = new TreeNode(tree, obj.label, obj.type);
 
   obj.children.forEach(child => {
-    const childNode = buildTree(child);
+    const childNode = buildTree(tree, child);
     childNode.parent.value = node;
   });
 
@@ -112,13 +112,12 @@ const dataTemplate = [
     property: 'DOM',
     getValue: (nodes) => nodes[nodes.length - 1].dom()
   }
-]
+];
 
-const treeData = new TreeData('.treedata', dataTemplate);
-const tree = new Tree('.treeview', treeData);
-tree.content.value = buildTree(treeObject);
+const properties = new TreeData('properties', dataTemplate);
+const tree = new Tree('tree', [properties]);
+tree.content.value = buildTree(tree, treeObject);
 
 // temp area
 window.TreeNode = TreeNode;
 window.tree = tree;
-window.treeData = treeData;
