@@ -1,3 +1,43 @@
+:root {
+  --foreground: #dddddd;
+  --foreground-dark: #aaaaaa;
+
+  --region: #151515;
+  --region-light: #1e1e1e;
+
+  --secondary-region: #292929;
+  --secondary-region-dark: #242424;
+  --secondary-region-light: #333333;
+
+  --border: #404040;
+  --border-dark: #2c2c2c;
+  --border-light: #4e4e4e;
+
+  --scrollbar: #555555;
+  --scrollbar-hover: #808080;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --foreground: #111111;
+    --foreground-dark: #444444;
+
+    --region: #d2d2d2;
+    --region-light: #eeeeee;
+
+    --secondary-region: #dfdfdf;
+    --secondary-region-dark: #e2e2e2;
+    --secondary-region-light: #d6d6d6;
+
+    --border: #bfbfbf;
+    --border-dark: #d5d5d5;
+    --border-light: #8f8f8f;
+
+    --scrollbar: #aaaaaa;
+    --scrollbar-hover: #727272;
+  }
+}
+
 @font-face {
   font-family: "Funnel Sans";
   src: url('../assets/fonts/FunnelSans-VariableFont_wght.ttf') format('truetype');
@@ -13,7 +53,8 @@ html, body {
 
 body {
   font-family: "Funnel Sans", "Segoe UI";
-  color: #ddd;
+  background-color: var(--region);
+  color: var(--foreground);
   padding: 10px;
   box-sizing: border-box;
   user-select: none;

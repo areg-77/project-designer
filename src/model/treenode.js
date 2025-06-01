@@ -49,6 +49,11 @@ export class BindedProperty {
   }
 }
 
+const iconPath = {
+  file: 'M240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h287q16 0 30.5 6t25.5 17l194 194q11 11 17 25.5t6 30.5v447q0 33-23.5 56.5T720-80H240Zm280-560q0 17 11.5 28.5T560-600h160L520-800v160Z',
+  folder: 'M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h207q16 0 30.5 6t25.5 17l57 57h320q33 0 56.5 23.5T880-640v400q0 33-23.5 56.5T800-160H160Z'
+}
+
 export class TreeNode {
   tree;
   element;
@@ -94,7 +99,7 @@ export class TreeNode {
     });
 
     this.type = new BindedProperty(type, val => {
-      this.element.treeIcon.src = `assets/icons/${val}-icon.svg`;
+      this.element.treeIcon.setAttribute('d', iconPath[type]);
     });
 
     this.expanded = new BindedProperty(true, val => {
@@ -115,7 +120,9 @@ export class TreeNode {
           <span class="expander"></span>
         </div>
         <div class="label-container">
-          <img class="tree-icon"/>
+          <svg class="tree-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor">
+            <path/>
+          </svg>
           <span class="tree-label"></span>
         </div>
       </div>
@@ -130,7 +137,7 @@ export class TreeNode {
           expanderContainer: li.querySelector('.expander-container'),
             expander: li.querySelector('.expander'),
         labelContainer: li.querySelector('.label-container'),
-          treeIcon: li.querySelector('.tree-icon'),
+          treeIcon: li.querySelector('.tree-icon path'),
           treeLabel: li.querySelector('.tree-label'),
         childrenContainer: li.querySelector('.children-container'),
           ul: li.querySelector('.children-container ul')

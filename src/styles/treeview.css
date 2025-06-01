@@ -1,6 +1,7 @@
 .treeview {
-  background-color: #1e1e1e;
-  border: 1px solid #404040;
+  background-color: var(--region-light);
+  border: 1px solid var(--border);
+  color: var(--foreground);
   border-radius: 8px;
   padding: 2px;
   font-size: 13px;
@@ -21,7 +22,7 @@
   opacity: 0;
 
   margin: 0px 1px 0px 1em;
-  border-left: 1px solid #2c2c2c;
+  border-left: 1px solid var(--border-dark);
 
   transition: grid-template-rows 250ms cubic-bezier(0.33, 0.13, 0.19, 1), border-color 350ms 100ms, opacity 500ms;
 }
@@ -30,7 +31,7 @@
   opacity: 1;
 }
 .treeview li:hover > .children-container {
-  border-color: #4e4e4e;
+  border-color: var(--border-light);
 }
 
 .treeview ul {
@@ -42,7 +43,7 @@
   transition: background-color 300ms 100ms;
 }
 .tree-node[data-selected="true"] + .children-container > ul {
-  background-color: #242424;
+  background-color: var(--secondary-region-dark);
 }
 
 .tree-node {
@@ -53,11 +54,11 @@
   transition: background-color 250ms;
 }
 .tree-node:hover {
-  background-color: #292929;
-  outline: 1px solid #404040;
+  background-color: var(--secondary-region);
+  outline: 1px solid var(--border);
 }
 .tree-node[data-selected="true"] {
-  background-color: #333;
+  background-color: var(--secondary-region-light);
 }
 
 .expander-container {
@@ -73,8 +74,8 @@
 }
 
 .expander-container .expander {
-  border-right: 1px solid #aaa;
-  border-bottom: 1px solid #aaa;
+  border-right: 1px solid var(--foreground-dark);
+  border-bottom: 1px solid var(--foreground-dark);
   height: 0.5em;
   aspect-ratio: 1;
   transform: rotate(-45deg);

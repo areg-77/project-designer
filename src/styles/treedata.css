@@ -1,6 +1,6 @@
 .treedata {
-  background-color: #1e1e1e;
-  border: 1px solid #404040;
+  background-color: var(--region-light);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 20px;
   font-size: 14px;

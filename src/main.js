@@ -10,7 +10,7 @@ function createMainWindow() {
     width: 1080,
     height: 600,
     useContentSize: true,
-    backgroundColor: '#151515',
+    backgroundColor: '#151515', // temp
     title: 'Project Designer',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
