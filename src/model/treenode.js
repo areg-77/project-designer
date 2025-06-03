@@ -244,7 +244,7 @@ export class Tree {
   shiftPressed;
 
   // initializing the tree
-  constructor(treeId) {
+  constructor(treeId, datas) {
     this.element = document.getElementById(treeId);
     this.element.setAttribute('tabindex', '0');
     
@@ -278,6 +278,9 @@ export class Tree {
         // selecting the node if its in the selectedNodes
         item.selected.value = val.includes(item);
         this.lastSelectedItem = item;
+
+        // sending to data
+        datas?.forEach(d => d.selectedNodes.value = val);
       }
     });
 
@@ -288,6 +291,18 @@ export class Tree {
           this.element.removeChild(this.element.firstChild);
         this.element.appendChild(val.element.li);
       }
+    });
+  }
+}
+
+export class TreeData {
+  element;
+
+  constructor(dataId, getValue) {
+    this.element = document.getElementById(dataId);
+
+    this.selectedNodes = new BindedProperty([], val => {
+      this.element.innerHTML = getValue(val);
     });
   }
 }

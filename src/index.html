@@ -10,7 +10,14 @@
   </head>
   <body>
     <main class="maingrid">
-      <div id="tree" class="treeview"></div>
+      <div style="
+        display: flex;
+        overflow: hidden;
+        flex-direction: column;
+      ">
+        <div id="path"></div>
+        <div id="tree" class="treeview"></div>
+      </div>
 
       <div id="data" class="treedata"></div>
     </main>

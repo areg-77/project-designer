@@ -66,6 +66,7 @@ body {
 
 .maingrid {
   display: grid;
+  overflow: hidden;
   grid-template-columns: 55fr 45fr;
   gap: 10px;
   height: 100%;

@@ -1,4 +1,4 @@
-import { Tree, TreeNode } from './model/treenode.js';
+import { Tree, TreeNode, TreeData } from './model/treenode.js';
 
 const treeObject =  {
   label: 'Project',
@@ -94,7 +94,13 @@ function buildTree(tree, obj) {
   return node;
 }
 
-const tree = new Tree('tree');
+const nodePath = new TreeData('path', (nodes) => {
+  // console.log('hello'); you can do something before showing. (planning o make the dataField have a class of .placeholder when theres no node selected then it will remove that class and show it)
+  return nodes[nodes.length - 1]?.path() ?? 'path';
+  // whatever you return is what the "field" is going to show
+});
+
+const tree = new Tree('tree', [nodePath]);
 tree.content.value = buildTree(tree, treeObject);
 
 // temp area
