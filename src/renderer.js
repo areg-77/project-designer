@@ -1,4 +1,4 @@
-import { Tree, TreeNode, TreeData } from './model/treenode.js';
+import { Tree, TreeNode } from './model/treenode.js';
 
 const treeObject =  {
   label: 'Project',
@@ -94,28 +94,7 @@ function buildTree(tree, obj) {
   return node;
 }
 
-const dataTemplate = [
-  {
-    property: 'Name',
-    getValue: (nodes) => nodes[nodes.length - 1].label.value,
-    setValue: (nodes, value) => nodes[nodes.length - 1].label.value = value
-  },
-  {
-    property: 'Parent',
-    getValue: (nodes) => nodes[nodes.length - 1].parent.value?.label.value
-  },
-  {
-    property: 'Path',
-    getValue: (nodes) => nodes[nodes.length - 1].path()
-  },
-  {
-    property: 'DOM',
-    getValue: (nodes) => nodes[nodes.length - 1].dom()
-  }
-];
-
-const properties = new TreeData('properties', dataTemplate);
-const tree = new Tree('tree', [properties]);
+const tree = new Tree('tree');
 tree.content.value = buildTree(tree, treeObject);
 
 // temp area

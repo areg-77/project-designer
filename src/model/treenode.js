@@ -49,10 +49,6 @@ export class BindedProperty {
   }
 }
 
-function toCamelCase(str) {
-  return str.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (_, ch) => ch.toUpperCase());
-}
-
 const iconPath = {
   file: 'M240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h287q16 0 30.5 6t25.5 17l194 194q11 11 17 25.5t6 30.5v447q0 33-23.5 56.5T720-80H240Zm280-560q0 17 11.5 28.5T560-600h160L520-800v160Z',
   folder: 'M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h207q16 0 30.5 6t25.5 17l57 57h320q33 0 56.5 23.5T880-640v400q0 33-23.5 56.5T800-160H160Z'
@@ -248,7 +244,7 @@ export class Tree {
   shiftPressed;
 
   // initializing the tree
-  constructor(treeId, data) {
+  constructor(treeId) {
     this.element = document.getElementById(treeId);
     this.element.setAttribute('tabindex', '0');
     
@@ -282,9 +278,6 @@ export class Tree {
         // selecting the node if its in the selectedNodes
         item.selected.value = val.includes(item);
         this.lastSelectedItem = item;
-
-        // sending to data
-        data.forEach(d => d.selectedNodes.value = [...val]);
       }
     });
 
@@ -295,61 +288,6 @@ export class Tree {
           this.element.removeChild(this.element.firstChild);
         this.element.appendChild(val.element.li);
       }
-    });
-  }
-}
-
-export class TreeData {
-  element;
-  selectedNodes;
-
-  // initializing the treeData
-  constructor(dataId, dataTemplate) {
-    this.element = { data: document.getElementById(dataId) };
-    this.#generateHTML(dataTemplate);
-
-    // updating the values of each dataField
-    this.selectedNodes = new BindedProperty([], val => {
-      dataTemplate.forEach(({ property, getValue }) => {
-        const content = val.length > 0 ? getValue(val) : '';
-        this.element[property].innerHTML = content;
-      });
-    });
-  }
-
-  #generateHTML(dataTemplate) {
-    dataTemplate.forEach(({ property, setValue }) => {
-      const dataField = document.createElement('div');
-      dataField.classList.add('data-field');
-      dataField.innerHTML = `<div class="data-label">${property}</div>`.trim();
-
-      const dataValue = document.createElement('div');
-      dataValue.classList.add('data-value');
-
-      if (setValue) {
-        dataValue.contentEditable = true;
-        dataValue.spellcheck = false;
-
-        dataValue.addEventListener('blur', () => {
-          this.selectedNodes.value = this.selectedNodes.value;
-        });
-        dataValue.addEventListener('keydown', e => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-            window.getSelection().removeAllRanges();
-
-            setValue(this.selectedNodes.value, dataValue.innerText);
-            dataValue.blur();
-          } else if (e.key === 'Escape') {
-            e.preventDefault();
-            dataValue.blur();
-          }
-        });
-      }
-      
-      dataField.appendChild(dataValue);
-      this.element.data.appendChild(dataField);
-      this.element[property] = dataValue;
     });
   }
 }
