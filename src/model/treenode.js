@@ -299,10 +299,15 @@ export class TreeData {
   element;
 
   constructor(dataId, getValue) {
-    this.element = document.getElementById(dataId);
+    const dataValue = document.getElementById(dataId);
+    const span = document.createElement('span');
+    span.contentEditable = true;
+    span.spellcheck = false;
+    dataValue.appendChild(span);
+    this.element = span ;
 
     this.selectedNodes = new BindedProperty([], val => {
-      this.element.innerHTML = getValue(val);
+      this.element.innerHTML = getValue(val, this.element);
     });
   }
 }

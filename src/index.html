@@ -10,16 +10,24 @@
   </head>
   <body>
     <main class="maingrid">
-      <div style="
-        display: flex;
-        overflow: hidden;
-        flex-direction: column;
-      ">
-        <div id="path"></div>
+      <div class="treeview-container">
+        <div id="path" class="data-value"></div>
         <div id="tree" class="treeview"></div>
       </div>
 
-      <div id="data" class="treedata"></div>
+      <div class="treedata-container">
+        <div>Properties</div>
+        <div class="treedata">
+          <div class="data-field">
+            <div class="data-label">Name</div>
+            <div id="name" class="data-value"></div>
+          </div>
+          <div class="data-field">
+            <div class="data-label">Type</div>
+            <div id="type" class="data-value"></div>
+          </div>
+        </div>
+      </div>
     </main>
 
     <script src="renderer.js" type="module"></script>

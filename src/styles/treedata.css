@@ -1,4 +1,12 @@
+.treedata-container {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .treedata {
+  flex: 1;
   display: flex;
   overflow: hidden;
   flex-direction: column;
@@ -8,6 +16,48 @@
   background-color: var(--region-light);
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 20px;
-  font-size: 14px;
+  padding: 10px;
+}
+
+.data-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  background-color: var(--secondary-region);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 2px;
+}
+
+.data-label {
+  background-color: var(--secondary-region-light);
+  padding: 2px 5px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+
+.data-value {
+  flex: 1 0 auto;
+  min-width: 0;
+  height: 1em;
+  padding: 2px 5px;
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  background-color: var(--region);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+
+  transition: border-color 200ms;
+}
+
+.data-value > span {
+  outline: none;
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.data-value:has(> span:focus) {
+  border-color: var(--border-light);
 }

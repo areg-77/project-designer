@@ -1,3 +1,10 @@
+.treeview-container {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .treeview {
   background-color: var(--region-light);
   border: 1px solid var(--border);

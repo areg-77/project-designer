@@ -94,13 +94,25 @@ function buildTree(tree, obj) {
   return node;
 }
 
-const nodePath = new TreeData('path', (nodes) => {
-  // console.log('hello'); you can do something before showing. (planning o make the dataField have a class of .placeholder when theres no node selected then it will remove that class and show it)
-  return nodes[nodes.length - 1]?.path() ?? 'path';
-  // whatever you return is what the "field" is going to show
-});
-
-const tree = new Tree('tree', [nodePath]);
+const tree = new Tree('tree', [
+  new TreeData('path', (nodes, elem) => {
+    // if (nodes[nodes.length - 1]) {
+    //   elem.classList.remove('placeholder');
+    //   return nodes[nodes.length - 1]?.path();
+    // }
+    // else {
+    //   elem.classList.add('placeholder');
+    //   return '../path';
+    // }
+    return nodes[nodes.length - 1]?.path() ?? '../path';
+  }),
+  new TreeData('name', (nodes) => {
+    return nodes[nodes.length - 1]?.label.value ?? '';
+  }),
+  new TreeData('type', (nodes) => {
+    return nodes[nodes.length - 1]?.type.value ?? '';
+  })
+]);
 tree.content.value = buildTree(tree, treeObject);
 
 // temp area
