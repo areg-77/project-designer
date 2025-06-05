@@ -2,7 +2,7 @@
   display: flex;
   overflow: hidden;
   flex-direction: column;
-  gap: 5px;
+  gap: 7px;
 }
 
 .treeview {
@@ -15,6 +15,14 @@
   overflow-x: hidden;
   overflow-y: auto;
   height: 100%;
+}
+.treeview.scroll-buffer::after {
+  content: "";
+  display: block;
+  height: 100%;
+  margin: 2px;
+  pointer-events: none;
+  visibility: hidden;
 }
 .treeview:focus {
   outline: none;
