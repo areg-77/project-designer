@@ -16,6 +16,11 @@ export class BindedProperty {
     this._value = newVal;
   }
 
+  update() {
+    if (this.onChange)
+      this.onChange(this._value);
+  }
+
   add(item) {
     if (Array.isArray(this._value)) {
       this._value.push(item);
@@ -72,6 +77,7 @@ export class TreeNode {
 
     this.label = new BindedProperty(label, val => {
       this.element.treeLabel.textContent = val;
+      queueMicrotask(() => this.tree.selectedNodes.update());
     });
 
     this.type = new BindedProperty(type, val => {
@@ -278,10 +284,9 @@ export class Tree {
         // selecting the node if its in the selectedNodes
         item.selected.value = val.includes(item);
         this.lastSelectedItem = item;
-
-        // sending to data
-        datas?.forEach(d => d.selectedNodes.value = val);
       }
+      // sending to data
+      datas?.forEach(d => d.selectedNodes.value = val);
     });
 
     // content (first TreeNode)
