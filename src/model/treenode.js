@@ -18,23 +18,27 @@ export class BindedProperty {
     this._value = newVal;
   }
 
+  setSort(sorted, sortFilter) {
+    this.sorted = sorted;
+    this.sortFilter = sortFilter;
+  }
+
   update() {
+    if (this.sorted)
+      this._value.sort(this.sortFilter);
     if (this.onChange)
       this.onChange(this._value);
   }
 
-  add(item) {
+  add(item, duplicateFilter) {
     if (Array.isArray(this._value)) {
-      this._value.push(item);
-      if (this.onChange)
-        this.onChange(this._value, item);
-    }
-  }
-
-  addD(item) {
-    if (Array.isArray(this._value)) {
-      if (!this._value.includes(item))
-        this.add(item);
+      if ((typeof duplicateFilter !== 'function') || !this._value.some(existingItem => duplicateFilter(existingItem) === duplicateFilter(item))) {
+        this._value.push(item);
+        if (this.sorted)
+          this._value.sort(this.sortFilter);
+        if (this.onChange)
+          this.onChange(this._value, item);
+      }
     }
   }
 
@@ -74,7 +78,10 @@ export class TreeNode {
 
     this.label = new BindedProperty(label, val => {
       this.element.treeLabel.textContent = val;
-      queueMicrotask(() => this.tree.selectedNodes.update());
+      queueMicrotask(() => {
+        this.parent.value?.children.update();
+        this.tree.selectedNodes.update()
+      });
     });
 
     this.type = new BindedProperty(type, val => {
@@ -106,14 +113,19 @@ export class TreeNode {
         this.element.ul.innerHTML = '';
       }
     });
+    // todo: in the future move the filter into the Tree so that the user can change the sorting method later
+    this.children.setSort(true, (a, b) =>
+      (b.type.value === 'folder') - (a.type.value === 'folder') ||
+      a.label.value.localeCompare(b.label.value, undefined, { sensitivity: 'base' }))
     
     this.parent = new BindedProperty(null, val => {
       const oldParent = this.parent?._value;
       if (oldParent)
         oldParent.children.delete(this);
 
-      if (val)
-        val.children.addD(this);
+      if (val) {
+        val.children.add(this, node => node.label.value);
+      }
       // else if (oldParent)
       //   this.element.li.remove();
     });
@@ -171,7 +183,7 @@ export class TreeNode {
           const [start, stop] = beginIndex < endIndex ? [beginIndex, endIndex] : [endIndex, beginIndex];
           for (let i = start; i <= stop; i++) {
             if (select)
-              this.tree.selectedNodes.addD(siblings[i]);
+              this.tree.selectedNodes.add(siblings[i], node => node.label.value);
             else
               this.tree.selectedNodes.delete(siblings[i]);
           }
@@ -190,7 +202,7 @@ export class TreeNode {
             this.tree.selectedNodes.delete(child);
         });
 
-        this.tree.selectedNodes.addD(this);
+        this.tree.selectedNodes.add(this, node => node.label.value);
       }
       else
         this.tree.selectedNodes.delete(this);
