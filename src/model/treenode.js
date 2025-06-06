@@ -302,17 +302,33 @@ export class Tree {
 
 export class TreeData {
   element;
+  selectedNodes;
 
-  constructor(dataId, getValue) {
+  constructor(dataId, getValue, setValue) {
     const dataValue = document.getElementById(dataId);
-    const span = document.createElement('span');
-    span.contentEditable = true;
-    span.spellcheck = false;
-    dataValue.appendChild(span);
-    this.element = span ;
+    this.element = document.createElement('span');
+    this.element.spellcheck = false;
+    dataValue.appendChild(this.element);
 
     this.selectedNodes = new BindedProperty([], val => {
-      this.element.innerHTML = getValue(val, this.element);
+      this.element.textContent = getValue(val, this.element);
+      this.element.contentEditable = (val.length > 0 && typeof setValue === "function");
     });
+
+    if (setValue) {
+      this.element.addEventListener('blur', () => this.selectedNodes.update());
+      this.element.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          window.getSelection().removeAllRanges();
+
+          setValue(this.selectedNodes.value, this.element);
+          this.element.blur();
+        } else if (e.key === 'Escape') {
+          e.preventDefault();
+          this.element.blur();
+        }
+      });
+    }
   }
 }

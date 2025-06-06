@@ -106,9 +106,14 @@ const tree = new Tree('tree', [
     // }
     return nodes[nodes.length - 1]?.path() ?? '../path';
   }),
-  new TreeData('name', (nodes) => {
-    return nodes[nodes.length - 1]?.label.value ?? '';
-  }),
+  new TreeData('name',
+    (nodes) => {
+      return nodes[nodes.length - 1]?.label.value ?? '';
+    },
+    (nodes, elem) => {
+      nodes[nodes.length - 1].label.value = elem.innerText;
+    }
+  ),
   new TreeData('type', (nodes) => {
     return nodes[nodes.length - 1]?.type.value ?? '';
   })
