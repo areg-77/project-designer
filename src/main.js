@@ -70,15 +70,15 @@ function createMainWindow() {
     }
   ]);
 
-  const contextMenu = Menu.buildFromTemplate([
-    { label: 'Developer Tools', role: 'toggleDevTools' }
-  ]);
-
   Menu.setApplicationMenu(menu);
 
-  win.webContents.on('context-menu', (e, props) => {
-    contextMenu.popup(win);
-  });
+  // const contextMenu = Menu.buildFromTemplate([
+  //   { label: 'Developer Tools', role: 'toggleDevTools' }
+  // ]);
+
+  // win.webContents.on('context-menu', (e, props) => {
+  //   contextMenu.popup(win);
+  // });
 }
 
 app.on('ready', () => {
