@@ -244,6 +244,12 @@ export class TreeNode {
     }
   }
 
+  scrollIntoView(expandParents = true) {
+    if (expandParents)
+      this.throughParents(p => p.expanded.value = true);
+    this.element.li.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }
+
   path = () => `${this.parent.value?.path() ?? '..'}/${this.label.value}`;
   dom = () => this.parent.value ? `${this.parent.value.dom()}.children.value[${this.parent.value.children.value.indexOf(this)}]` : 'tree.content.value';
 }
