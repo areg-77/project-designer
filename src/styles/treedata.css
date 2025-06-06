@@ -12,7 +12,6 @@
   flex-direction: column;
   gap: 10px;
 
-  color: var(--foreground-light);
   background-color: var(--region-light);
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -31,6 +30,7 @@
 
 .data-label {
   background-color: var(--secondary-region-light);
+  color: var(--foreground-light);
   padding: 2px 5px;
   border: 1px solid var(--border);
   border-radius: 5px;
@@ -52,10 +52,16 @@
 }
 
 .data-value > span {
+  color: var(--foreground-dark);
   outline: none;
   flex: 1 1 auto;
   overflow: hidden;
   white-space: nowrap;
+
+  transition: color 200ms;
+}
+.data-value > span[contenteditable]:focus {
+  color: var(--foreground);
 }
 .data-value:has(> span[contenteditable]:focus) {
   border-color: var(--border-light);

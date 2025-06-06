@@ -307,28 +307,37 @@ export class TreeData {
   constructor(dataId, getValue, setValue) {
     const dataValue = document.getElementById(dataId);
     this.element = document.createElement('span');
+    this.element.contentEditable = true;
     this.element.spellcheck = false;
     dataValue.appendChild(this.element);
 
     this.selectedNodes = new BindedProperty([], val => {
       this.element.textContent = getValue(val, this.element);
-      this.element.contentEditable = (val.length > 0 && typeof setValue === "function");
+      if ((val.length > 0 && typeof setValue === "function"))
+        this.element.removeAttribute('data-readonly');
+      else
+        this.element.setAttribute('data-readonly', '');
     });
+    
+    this.element.addEventListener('blur', () => {
+      this.selectedNodes.update()
+      window.getSelection()?.removeAllRanges();
+    });
+    this.element.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
 
-    if (setValue) {
-      this.element.addEventListener('blur', () => this.selectedNodes.update());
-      this.element.addEventListener('keydown', e => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          window.getSelection().removeAllRanges();
-
+        if (setValue)
           setValue(this.selectedNodes.value, this.element);
-          this.element.blur();
-        } else if (e.key === 'Escape') {
-          e.preventDefault();
-          this.element.blur();
-        }
-      });
-    }
+        this.element.blur();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        this.element.blur();
+      }
+    });
+    // block input if readonly
+    this.element.addEventListener('beforeinput', e => {
+      if (this.element.hasAttribute('data-readonly')) e.preventDefault();
+    });
   }
 }

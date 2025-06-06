@@ -116,6 +116,9 @@ const tree = new Tree('tree', [
   ),
   new TreeData('type', (nodes) => {
     return nodes[nodes.length - 1]?.type.value ?? '';
+  }),
+  new TreeData('dom', (nodes) => {
+    return nodes[nodes.length - 1]?.dom() ?? '';
   })
 ]);
 tree.content.value = buildTree(tree, treeObject);

@@ -70,6 +70,7 @@
   flex-shrink: 0;
   margin: 1px;
   border-radius: 5px;
+  padding-right: 1em;
 
   transition: background-color 250ms;
 }
@@ -112,7 +113,7 @@
   width: 100%;
   padding: 3px 0px;
   display: flex;
-  flex-shrink: 0;
+  flex-shrink: 1;
   overflow: hidden;
   align-items: center;
   gap: 0.3em;
@@ -126,4 +127,5 @@
 .tree-label {
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
