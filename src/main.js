@@ -13,6 +13,7 @@ function createMainWindow() {
     useContentSize: true,
     backgroundColor: '#151515', // temp
     title: 'Project Designer',
+    icon: path.join(__dirname, 'assets/icons/icon.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
