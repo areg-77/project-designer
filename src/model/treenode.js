@@ -81,7 +81,7 @@ export class TreeNode {
       this.element.treeIcon.setAttribute('d', iconPath[val]);
     });
     
-    this.expanded = new BindedProperty(true, val => {
+    this.expanded = new BindedProperty(false, val => {
       this.element.treeNode.dataset.expanded = val;
     });
 

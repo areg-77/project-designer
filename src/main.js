@@ -1,6 +1,7 @@
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('node:path');
 const fs = require('fs');
+const fsPromises = require('fs').promises;
 
 const isMac = process.platform === 'darwin';
 
@@ -93,4 +94,31 @@ app.on('ready', () => {
 app.on('window-all-closed', () => {
   if (!isMac)
     app.quit();
+});
+
+async function readProject(dirPath) {
+  const items = await fsPromises.readdir(dirPath, { withFileTypes: true });
+
+  const children = await Promise.all(items.map(async (item) => {
+    const fullPath = path.join(dirPath, item.name);
+    if (item.isDirectory()) {
+      return await readProject(fullPath);
+    } else {
+      return {
+        label: item.name,
+        type: 'file',
+        children: [],
+      };
+    }
+  }));
+
+  return {
+    label: path.basename(dirPath),
+    type: 'folder',
+    children,
+  };
+}
+
+ipcMain.handle('read-project', async (event, dirPath) => {
+  return await readProject(dirPath);;
 });
