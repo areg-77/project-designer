@@ -36,15 +36,18 @@
   display: grid;
   grid-template-rows: 0fr;
   opacity: 0;
+  transform: scaleY(0.9);
+  transform-origin: top;
 
   margin: 0px 1px 0px 1em;
   border-left: 1px solid var(--border-dark);
 
-  transition: grid-template-rows 250ms cubic-bezier(0.33, 0.13, 0.19, 1), border-color 350ms 100ms, opacity 500ms;
+  transition: grid-template-rows 250ms cubic-bezier(0.33, 0.13, 0.19, 1), transform 250ms, border-color 350ms 100ms, opacity 500ms;
 }
 .tree-node[data-expanded="true"] + .children-container {
   grid-template-rows: 1fr;
   opacity: 1;
+  transform: scaleY(1);
 }
 .treeview li:hover > .children-container {
   border-color: var(--border-light);
