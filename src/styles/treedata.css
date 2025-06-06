@@ -10,12 +10,41 @@
   display: flex;
   overflow: hidden;
   flex-direction: column;
-  gap: 10px;
+  gap: 1em;
 
   background-color: var(--region-light);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 10px;
+}
+
+.data-group-container {
+  display: grid;
+  gap: 2px;
+  background-color: var(--secondary-region-dark);
+  border: 1px solid var(--border-dark);
+  border-radius: 7px;
+  padding: 2px;
+  overflow: hidden;
+}
+
+.group-label {
+  background-color: var(--secondary-region-light);
+  padding: 3px 5px;
+  border-radius: 5px;
+  border: 0px solid var(--border);
+  border-width: 1px 1px 2px 1px;
+}
+
+.data-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  background-color: var(--secondary-region);
+  border: 1px solid var(--border-dark);
+  border-radius: 5px;
+  padding: 10px;
+  overflow: hidden;
 }
 
 .data-field {
@@ -32,7 +61,8 @@
   background-color: var(--secondary-region-light);
   color: var(--foreground-light);
   padding: 2px 5px;
-  border: 1px solid var(--border);
+  border: 0px solid var(--border);
+  border-width: 1px 1px 2px 1px;
   border-radius: 5px;
 }
 
