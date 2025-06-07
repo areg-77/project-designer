@@ -19,16 +19,23 @@
 }
 
 .data-group-container {
-  display: grid;
-  gap: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
   background-color: var(--secondary-region-dark);
   border: 1px solid var(--border-dark);
   border-radius: 7px;
-  padding: 2px;
+  padding: 3px;
   overflow: hidden;
 }
 
 .group-label {
+  display: flex;
+  flex: 1 0 auto;
+  overflow: hidden;
+  align-items: center;
+  gap: 0.3em;
+
   background-color: var(--secondary-region-light);
   padding: 3px 5px;
   border-radius: 5px;

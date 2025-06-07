@@ -1,5 +1,3 @@
-import { iconPath } from './iconPaths.js';
-
 export class BindedProperty {
   constructor(value, onChange) {
     this.onChange = onChange;
@@ -85,7 +83,8 @@ export class TreeNode {
     });
 
     this.type = new BindedProperty(type, val => {
-      this.element.treeIcon.setAttribute('d', iconPath[val]);
+      this.element.treeIcon.className = 'icon';
+      this.element.treeIcon.classList.add(val)
     });
     
     this.expanded = new BindedProperty(false, val => {
@@ -140,9 +139,7 @@ export class TreeNode {
           <span class="expander"></span>
         </div>
         <div class="label-container">
-          <svg class="tree-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor">
-            <path/>
-          </svg>
+          <span class="icon" style="height: 1.2em"></span>
           <span class="tree-label"></span>
         </div>
       </div>
@@ -157,7 +154,7 @@ export class TreeNode {
           expanderContainer: li.querySelector('.expander-container'),
             expander: li.querySelector('.expander'),
         labelContainer: li.querySelector('.label-container'),
-          treeIcon: li.querySelector('.tree-icon path'),
+          treeIcon: li.querySelector('.icon'),
           treeLabel: li.querySelector('.tree-label'),
         childrenContainer: li.querySelector('.children-container'),
           ul: li.querySelector('.children-container ul')
