@@ -16,11 +16,13 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 10px;
+  overflow-y: auto;
 }
 
 .data-group-container {
   display: flex;
   flex-direction: column;
+  flex: 0 0 auto;
   gap: 3px;
   background-color: var(--secondary-region-dark);
   border: 1px solid var(--border-dark);
@@ -31,7 +33,7 @@
 
 .group-label {
   display: flex;
-  flex: 1 0 auto;
+  flex: 0 0 auto;
   overflow: hidden;
   align-items: center;
   gap: 0.3em;
