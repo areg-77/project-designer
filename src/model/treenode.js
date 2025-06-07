@@ -22,8 +22,10 @@ export class BindedProperty {
   }
 
   update() {
-    if (this.sorted)
-      this._value.sort(this.sortFilter);
+    if (Array.isArray(this._value)) {
+      if (this.sorted)
+        this._value.sort(this.sortFilter);
+    }
     if (this.onChange)
       this.onChange(this._value);
   }
