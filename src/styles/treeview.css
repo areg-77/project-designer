@@ -6,6 +6,8 @@
 }
 
 .tree-toolbar {
+  display: flex;
+
   background-color: var(--region-light);
   padding: 2px;
   border: 1px solid var(--border);

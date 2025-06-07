@@ -76,17 +76,25 @@ export class TreeNode {
     this.tree = tree;
     this.#generateHTML();
 
+    this.type = new BindedProperty(type, val => {
+      this.element.treeIcon.className = 'icon';
+      this.element.treeIcon.classList.add(val);
+    });
+
     this.label = new BindedProperty(label, val => {
       this.element.treeLabel.textContent = val;
+
+      if(this.type.value != 'folder') {
+        this.type.update();
+        const extension = val.includes('.') ? val.split('.').pop() : null;
+        if (extension)
+          this.element.treeIcon.classList.add(extension);
+      }
+
       queueMicrotask(() => {
         this.parent.value?.children.update();
         this.tree.selectedNodes.update()
       });
-    });
-
-    this.type = new BindedProperty(type, val => {
-      this.element.treeIcon.className = 'icon';
-      this.element.treeIcon.classList.add(val)
     });
     
     this.expanded = new BindedProperty(false, val => {
@@ -141,7 +149,7 @@ export class TreeNode {
           <span class="expander"></span>
         </div>
         <div class="label-container">
-          <span class="icon" style="height: 1.2em"></span>
+          <span class="icon" style="height: 1rem"></span>
           <span class="tree-label"></span>
         </div>
       </div>
