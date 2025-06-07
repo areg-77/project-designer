@@ -2,6 +2,7 @@ const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('node:path');
 const fs = require('fs');
 const fsPromises = require('fs').promises;
+const mime = require('mime-types');
 
 const isMac = process.platform === 'darwin';
 
@@ -124,4 +125,8 @@ async function readProject(dirPath) {
 
 ipcMain.handle('read-project', async (event, dirPath) => {
   return await readProject(dirPath);;
+});
+
+ipcMain.handle('get-mime-type', (event, filename) => {
+  return mime.lookup(filename);
 });

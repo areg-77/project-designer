@@ -84,11 +84,21 @@ export class TreeNode {
     this.label = new BindedProperty(label, val => {
       this.element.treeLabel.textContent = val;
 
-      if(this.type.value != 'folder') {
+      if (this.type.value !== 'folder') {
         this.type.update();
-        const extension = val.includes('.') ? val.split('.').pop() : null;
-        if (extension)
-          this.element.treeIcon.classList.add(extension);
+        window.electronAPI.getMimeType(val).then(mimeType => {
+          const extension = val.includes('.') ? val.split('.').pop() : null;
+
+          let type = null;
+          if (typeof mimeType === 'string' && mimeType.includes('/'))
+            type = mimeType.split('/')[0];
+
+          if (extension) {
+            if (type)
+              this.element.treeIcon.classList.add(type);
+            this.element.treeIcon.classList.add(extension);
+          }
+        });
       }
 
       queueMicrotask(() => {
