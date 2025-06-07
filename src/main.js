@@ -10,8 +10,8 @@ function createMainWindow() {
     show: false,
     width: 1080,
     height: 600,
-    minWidth: 600,
-    minHeight: 400,
+    // minWidth: 600,
+    // minHeight: 400,
     useContentSize: true,
     backgroundColor: '#151515', // temp
     title: 'Project Designer',

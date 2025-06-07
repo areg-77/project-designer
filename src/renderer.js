@@ -21,6 +21,9 @@ const tree = new Tree('tree', [
     //   elem.classList.add('placeholder');
     //   return '../path';
     // }
+    requestAnimationFrame(() => {
+      elem.scrollLeft = elem.scrollWidth;
+    });
     return nodes[nodes.length - 1]?.path() ?? '../path';
   }),
   new TreeData('name',
