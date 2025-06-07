@@ -1,4 +1,4 @@
-import { Tree, TreeNode, TreeData } from './model/treenode.js';
+import { Tree, TreeNode, TreeData } from './model/index.js';
 
 function buildTree(tree, obj) {
   const node = new TreeNode(tree, obj.label, obj.type);
