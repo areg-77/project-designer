@@ -1,31 +1,36 @@
 {
   "name": "project-designer",
   "version": "1.0.0",
-  "description": "Project designing tool",
+  "description": "Project Designing and Managing tool",
   "license": "MIT",
   "author": "areg-77",
   "type": "commonjs",
   "main": "src/main.js",
+  "build": {
+    "appId": "com.areg77.projectdesigner",
+    "productName": "ProjectDesigner",
+    "files": [
+      "src/**/*",
+      "!**/tests/**"
+    ],
+    "directories": {
+      "output": "bin"
+    },
+    "extraResources": [],
+    "compression": "maximum",
+    "win": {
+      "target": "portable",
+      "icon": "src/assets/icons/icon.ico"
+    }
+  },
   "scripts": {
     "launch": "electron .",
+    "build": "electron-builder",
     "childrentest": "node src/tests/children-test.js",
-    "multipletest": "node src/tests/multiple-selected-test.js",
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make"
+    "multipletest": "node src/tests/multiple-selected-test.js"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^7.8.1",
-    "@electron-forge/maker-deb": "^7.8.1",
-    "@electron-forge/maker-rpm": "^7.8.1",
-    "@electron-forge/maker-squirrel": "^7.8.1",
-    "@electron-forge/maker-zip": "^7.8.1",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.8.1",
-    "@electron-forge/plugin-fuses": "^7.8.1",
-    "@electron/fuses": "^1.8.0",
-    "electron": "^36.3.1"
-  },
-  "dependencies": {
-    "electron-squirrel-startup": "^1.0.1"
+    "electron": "^36.3.1",
+    "electron-builder": "^26.0.12"
   }
 }
