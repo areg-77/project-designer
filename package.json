@@ -25,12 +25,13 @@
   },
   "scripts": {
     "launch": "electron .",
-    "build": "electron-builder",
+    "build": "rimraf bin && electron-builder",
     "childrentest": "node src/tests/children-test.js",
     "multipletest": "node src/tests/multiple-selected-test.js"
   },
   "devDependencies": {
     "electron": "^36.3.1",
-    "electron-builder": "^26.0.12"
+    "electron-builder": "^26.0.12",
+    "rimraf": "^6.0.1"
   }
 }
