@@ -26,6 +26,7 @@
   "scripts": {
     "launch": "electron .",
     "build": "rimraf bin && electron-builder",
+    "pattern": "node src/model/pattern.js",
     "childrentest": "node src/tests/children-test.js",
     "multipletest": "node src/tests/multiple-selected-test.js"
   },

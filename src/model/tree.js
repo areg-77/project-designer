@@ -56,8 +56,6 @@ export class Tree {
         while (this.element.firstChild)
           this.element.removeChild(this.element.firstChild);
         this.element.appendChild(val.element.li);
-
-        val.scrollIntoView();
       }
     });
   }

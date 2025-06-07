@@ -41,8 +41,8 @@
   background-color: var(--secondary-region-light);
   padding: 3px 5px;
   border-radius: 5px;
-  border: 0px solid var(--border);
-  border-width: 1px 1px 2px 1px;
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
 }
 
 .data-group {
@@ -70,8 +70,8 @@
   background-color: var(--secondary-region-light);
   color: var(--foreground-light);
   padding: 2px 5px;
-  border: 0px solid var(--border);
-  border-width: 1px 1px 2px 1px;
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
   border-radius: 5px;
 }
 

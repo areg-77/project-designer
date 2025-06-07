@@ -13,7 +13,7 @@ export class TreeData {
 
     this.selectedNodes = new BindedProperty([], val => {
       this.element.textContent = getValue(val, this.element);
-      if ((val.length > 0 && typeof setValue === "function"))
+      if ((val.length > 0 && getValue(val, this.element) && typeof setValue === "function"))
         this.element.removeAttribute('data-readonly');
       else
         this.element.setAttribute('data-readonly', '');

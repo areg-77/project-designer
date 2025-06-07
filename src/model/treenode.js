@@ -17,7 +17,7 @@ export class TreeNode {
     this.#generateHTML();
 
     this.type = new BindedProperty(type, val => {
-      this.element.treeIcon.className = 'icon';
+      this.element.treeIcon.className = 'tree-icon icon';
       this.element.treeIcon.classList.add(val);
     });
 
@@ -33,7 +33,7 @@ export class TreeNode {
           if (typeof mimeType === 'string' && mimeType.includes('/'))
             type = mimeType.split('/')[0];
 
-          if (extension) {
+          if (extension && !extension.includes(' ')) {
             if (type)
               this.element.treeIcon.classList.add(type);
             this.element.treeIcon.classList.add(extension);
@@ -44,7 +44,6 @@ export class TreeNode {
       queueMicrotask(() => {
         this.parent.value?.children.update();
         this.tree.selectedNodes.update();
-        this.scrollIntoView();
       });
     });
     
@@ -100,7 +99,7 @@ export class TreeNode {
           <span class="expander"></span>
         </div>
         <div class="label-container">
-          <span class="icon" style="height: 1rem"></span>
+          <span class="tree-icon icon"></span>
           <span class="tree-label"></span>
         </div>
       </div>
@@ -115,7 +114,7 @@ export class TreeNode {
           expanderContainer: li.querySelector('.expander-container'),
             expander: li.querySelector('.expander'),
         labelContainer: li.querySelector('.label-container'),
-          treeIcon: li.querySelector('.icon'),
+          treeIcon: li.querySelector('.tree-icon'),
           treeLabel: li.querySelector('.tree-label'),
         childrenContainer: li.querySelector('.children-container'),
           ul: li.querySelector('.children-container ul')
@@ -202,9 +201,9 @@ export class TreeNode {
     }
   }
 
-  scrollIntoView(expandParents = true) {
-    if (expandParents)
-      this.throughParents(p => p.expanded.value = true);
+  scrollIntoView(/*expandParents = true*/) {
+    // if (expandParents)
+    //   this.throughParents(p => p.expanded.value = true);
     this.element.li.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
 
