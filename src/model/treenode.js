@@ -103,7 +103,8 @@ export class TreeNode {
 
       queueMicrotask(() => {
         this.parent.value?.children.update();
-        this.tree.selectedNodes.update()
+        this.tree.selectedNodes.update();
+        this.scrollIntoView();
       });
     });
     
@@ -327,6 +328,8 @@ export class Tree {
         while (this.element.firstChild)
           this.element.removeChild(this.element.firstChild);
         this.element.appendChild(val.element.li);
+
+        val.scrollIntoView();
       }
     });
   }
