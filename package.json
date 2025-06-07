@@ -8,7 +8,7 @@
   "main": "src/main.js",
   "build": {
     "appId": "com.areg77.projectdesigner",
-    "productName": "ProjectDesigner",
+    "productName": "Project Designer",
     "files": [
       "src/**/*",
       "!**/tests/**"
