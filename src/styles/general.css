@@ -64,10 +64,11 @@ html, body {
 
 body {
   font-family: "Funnel Sans", "Segoe UI";
+  font-weight: 500;
+  font-size: 14px;
   background-color: var(--region);
   color: var(--foreground);
   padding: 15px;
-  font-size: 14px;
   box-sizing: border-box;
   user-select: none;
 }

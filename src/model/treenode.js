@@ -48,6 +48,7 @@ export class TreeNode {
     });
     
     this.expanded = new BindedProperty(false, val => {
+      val ||= !this.parent?.value;
       this.element.treeNode.dataset.expanded = val;
     });
 
@@ -82,11 +83,10 @@ export class TreeNode {
       if (oldParent)
         oldParent.children.delete(this);
 
-      if (val) {
+      if (val)
         val.children.add(this, node => node.label.value);
-      }
-      // else if (oldParent)
-      //   this.element.li.remove();
+
+      this.type.update();
     });
   }
 
@@ -201,10 +201,8 @@ export class TreeNode {
     }
   }
 
-  scrollIntoView(/*expandParents = true*/) {
-    // if (expandParents)
-    //   this.throughParents(p => p.expanded.value = true);
-    this.element.li.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  scrollIntoView() {
+    this.element.treeNode.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
 
   path = () => `${this.parent.value?.path() ?? '..'}/${this.label.value}`;
