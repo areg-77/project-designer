@@ -38,6 +38,17 @@ function createMainWindow() {
       submenu: [
         { label: 'Developer Tools', role: 'toggleDevTools' },
         {
+          label: 'Developer Tools (Detached)',
+          click: () => {
+            if (win) {
+              if (win.webContents.isDevToolsOpened())
+                win.webContents.closeDevTools();
+              else
+                win.webContents.openDevTools({ mode: 'detach' });
+            }
+          }
+        },
+        {
           label: 'Screenshot',
           accelerator: 'f2',
           click: () => {
