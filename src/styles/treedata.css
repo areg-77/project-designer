@@ -17,6 +17,7 @@
   border-radius: 8px;
   padding: 10px;
   overflow-y: auto;
+  /* scrollbar-gutter: stable both-edges; */
 }
 
 .data-group-container {
