@@ -1,7 +1,9 @@
 import { BindedProperty } from './bindedProperty.js';
+import { isCursorAtStart, isCursorInsideElement, isCursorBeforeElement, isCursorAfterElement } from './cursorPosition.js';
 
 export class TreeData {
   element;
+  editable;
   selectedNodes;
   lock;
 
@@ -13,12 +15,16 @@ export class TreeData {
     this.element.spellcheck = false;
     dataValue.appendChild(this.element);
 
-    this.selectedNodes = new BindedProperty([], val => {
-      this.element.innerHTML = getValue(val, this.element).replace(/\*/g, `<span class="lock" contenteditable="false">${this.lock}</span>`);
-      if ((val.length > 0 && getValue(val, this.element) && typeof setValue === "function"))
+    this.editable = new BindedProperty(false, val => {
+      if (val)
         this.element.removeAttribute('data-readonly');
       else
         this.element.setAttribute('data-readonly', '');
+    });
+
+    this.selectedNodes = new BindedProperty([], val => {
+      this.element.innerHTML = getValue(val, this.element).replace(/\*/g, `<span class="lock" contenteditable="false">${this.lock}</span>`);
+      this.editable.value = (val.length > 0 && getValue(val, this.element) && typeof setValue === "function");
     });
     
     this.element.addEventListener('blur', () => {
@@ -36,10 +42,15 @@ export class TreeData {
         e.preventDefault();
         this.element.blur();
       }
+      else {
+        if (((e.key === 'Backspace' && (isCursorAfterElement('lock') || isCursorAtStart())) || (e.key === 'Delete' && isCursorBeforeElement('lock'))) || isCursorInsideElement('lock')) {
+          e.preventDefault();
+        }
+      }
     });
     // block input if readonly
     this.element.addEventListener('beforeinput', e => {
-      if (this.element.hasAttribute('data-readonly') || e.data === this.lock) e.preventDefault();
+      if (!this.editable.value || e.data === this.lock) e.preventDefault();
     });
   }
 }
