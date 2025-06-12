@@ -2,11 +2,6 @@ import { BindedProperty } from './bindedProperty.js';
 import { isCursorAtStart, isCursorInsideElement, isCursorBeforeElement, isCursorAfterElement } from './cursorPosition.js';
 
 export class TreeData {
-  element;
-  editable;
-  selectedNodes;
-  lock;
-
   constructor(dataId, getValue, setValue) {
     this.lock = '*';
     const dataValue = document.getElementById(dataId);
@@ -52,7 +47,8 @@ export class TreeData {
     });
     // block input if readonly
     this.element.addEventListener('beforeinput', e => {
-      if (!this.editable.value || e.data === this.lock) e.preventDefault();
+      if (!this.editable.value || e.data === this.lock)
+        e.preventDefault();
     });
   }
 }

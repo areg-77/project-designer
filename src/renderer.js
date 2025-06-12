@@ -33,10 +33,7 @@ const tree = new Tree('tree', [
         labels = setPattern(labels, elem.textContent);
         nodes.forEach((node, i) => node.label.value = labels[i]);
 
-        requestAnimationFrame(() => 
-          nodes.reduce((a, b) => a.path().length <= b.path().length ? a : b)
-          .scrollIntoView()
-        );
+        requestAnimationFrame(() => nodes[nodes.length - 1].scrollIntoView());
       }
     }
   ),

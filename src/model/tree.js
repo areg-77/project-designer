@@ -1,18 +1,9 @@
 import { BindedProperty } from './bindedProperty.js';
 
 export class Tree {
-  element;
-  content;
-
-  selectedNodes;
-  lastSelectedItem
-
-  ctrlCmdPressed;
-  shiftPressed;
-
-  // initializing the tree
   constructor(treeId, datas) {
     this.element = document.getElementById(treeId);
+    this.element.setAttribute('tabindex', '0');
     
     // listener for holding ctrl/command or shift
     document.addEventListener('keydown', (e) => {

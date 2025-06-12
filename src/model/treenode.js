@@ -1,17 +1,6 @@
 import { BindedProperty } from './bindedProperty.js';
 
 export class TreeNode {
-  tree;
-  element;
-
-  parent;
-  label;
-  type;
-  expanded;
-  selected;
-  children;
-
-  // initializing the node
   constructor(tree, label, type) {
     this.tree = tree;
     this.#generateHTML();
@@ -22,29 +11,28 @@ export class TreeNode {
     });
 
     this.label = new BindedProperty(label, val => {
-      this.element.treeLabel.textContent = val;
+      if (val != this.label?.value) {
+        this.element.treeLabel.textContent = val;
 
-      if (this.type.value !== 'folder') {
-        this.type.update();
-        window.electronAPI.getMimeType(val).then(mimeType => {
-          const extension = val.includes('.') ? val.split('.').pop() : null;
+        if (this.type.value !== 'folder') {
+          this.type.update();
+          window.electronAPI.getMimeType(val).then(mimeType => {
+            const extension = val.includes('.') ? val.split('.').pop() : null;
 
-          let type = null;
-          if (typeof mimeType === 'string' && mimeType.includes('/'))
-            type = mimeType.split('/')[0];
+            let type = null;
+            if (typeof mimeType === 'string' && mimeType.includes('/'))
+              type = mimeType.split('/')[0];
 
-          if (extension && !extension.includes(' ')) {
-            if (type)
-              this.element.treeIcon.classList.add(type);
-            this.element.treeIcon.classList.add(extension);
-          }
-        });
+            if (extension && !extension.includes(' ')) {
+              if (type)
+                this.element.treeIcon.classList.add(type);
+              this.element.treeIcon.classList.add(extension);
+            }
+          });
+        }
+        queueMicrotask(() => this.parent.value?.children.update());
       }
-
-      queueMicrotask(() => {
-        this.parent.value?.children.update();
-        this.tree.selectedNodes.update();
-      });
+      queueMicrotask(() => this.tree.selectedNodes.update());
     });
     
     this.expanded = new BindedProperty(false, val => {
@@ -52,9 +40,7 @@ export class TreeNode {
       this.element.treeNode.dataset.expanded = val;
     });
 
-    this.selected = new BindedProperty(false, val => {
-      this.element.treeNode.dataset.selected = val;
-    });
+    this.selected = new BindedProperty(false, val => this.element.treeNode.dataset.selected = val);
 
     this.children = new BindedProperty([], val => {
       if (val.length > 0) {
@@ -63,9 +49,7 @@ export class TreeNode {
         this.element.ul.innerHTML = '';
 
         // adding each node to html
-        val.forEach(child => {
-          this.element.ul.appendChild(child.element.li);
-        });
+        val.forEach(child => this.element.ul.appendChild(child.element.li));
       }
       else {
         this.expanded.value = false;
@@ -80,13 +64,9 @@ export class TreeNode {
     
     this.parent = new BindedProperty(null, val => {
       const oldParent = this.parent?._value;
-      if (oldParent)
-        oldParent.children.delete(this);
-
-      if (val)
-        val.children.add(this, node => node.label.value);
-
-      this.type.update();
+      oldParent?.children.delete(this);
+      
+      val?.children.add(this, node => node.label.value);
     });
   }
 
@@ -121,9 +101,7 @@ export class TreeNode {
     }
 
     // listener for expanding/collapsing
-    this.element.expanderContainer.addEventListener('click', () => {
-      this.expanded.value = !this.expanded.value;
-    });
+    this.element.expanderContainer.addEventListener('click', () => this.expanded.value = !this.expanded.value);
 
     // listener for selecting/deselecting
     this.element.labelContainer.addEventListener('click', () => {
@@ -201,9 +179,7 @@ export class TreeNode {
     }
   }
 
-  scrollIntoView() {
-    this.element.treeNode.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-  }
+  scrollIntoView = () => this.element.treeNode.scrollIntoView({ block: 'nearest', inline: 'nearest' });
 
   path = () => `${this.parent.value?.path() ?? '..'}/${this.label.value}`;
   dom = () => this.parent.value ? `${this.parent.value.dom()}.children.value[${this.parent.value.children.value.indexOf(this)}]` : 'tree.content.value';
