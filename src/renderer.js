@@ -1,4 +1,4 @@
-import { Tree, TreeNode, TreeData, getPattern, getPatternClean, setPattern } from './model/index.js';
+import { Tree, TreeNode, TreeData, getPattern, setPattern } from './model/index.js';
 
 function buildTree(tree, obj) {
   const node = new TreeNode(tree, obj.label, obj.type);
@@ -13,32 +13,27 @@ function buildTree(tree, obj) {
 
 const tree = new Tree('tree', [
   new TreeData('path', (nodes, elem) => {
-    // if (nodes[nodes.length - 1]) {
-    //   elem.classList.remove('placeholder');
-    //   return nodes[nodes.length - 1]?.path();
-    // }
-    // else {
-    //   elem.classList.add('placeholder');
-    //   return '../path';
-    // }
+    elem.style = "color: var(--foreground-dark)";
     requestAnimationFrame(() => elem.scrollLeft = elem.scrollWidth);
+    
+    if (nodes.length > 1)
+      return `../${getPattern(nodes.map(n => n.label.value))} (${nodes.length})`;
     return nodes[nodes.length - 1]?.path() ?? '../path';
   }),
   new TreeData('name',
     (nodes) => {
-      return getPatternClean(nodes.map(n => n.label.value));
+      return getPattern(nodes.map(n => n.label.value));
     },
     (nodes, elem) => {
-      if (elem.textContent && false) {
+      if (elem.textContent) {
         let labels = nodes.map(n => n.label.value);
         labels = setPattern(labels, elem.textContent);
         nodes.forEach((node, i) => node.label.value = labels[i]);
 
-        requestAnimationFrame(() => nodes[nodes.length - 1].scrollIntoView());
-      }
-      if (elem.textContent) {
-        nodes[nodes.length - 1].label.value = elem.textContent;
-        requestAnimationFrame(() => nodes[nodes.length - 1].scrollIntoView());
+        requestAnimationFrame(() => 
+          nodes.reduce((a, b) => a.path().length <= b.path().length ? a : b)
+          .scrollIntoView()
+        );
       }
     }
   ),

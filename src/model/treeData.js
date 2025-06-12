@@ -3,8 +3,10 @@ import { BindedProperty } from './bindedProperty.js';
 export class TreeData {
   element;
   selectedNodes;
+  lock;
 
   constructor(dataId, getValue, setValue) {
+    this.lock = '*';
     const dataValue = document.getElementById(dataId);
     this.element = document.createElement('span');
     this.element.contentEditable = true;
@@ -12,7 +14,7 @@ export class TreeData {
     dataValue.appendChild(this.element);
 
     this.selectedNodes = new BindedProperty([], val => {
-      this.element.textContent = getValue(val, this.element);
+      this.element.innerHTML = getValue(val, this.element).replace(/\*/g, `<span class="lock" contenteditable="false">${this.lock}</span>`);
       if ((val.length > 0 && getValue(val, this.element) && typeof setValue === "function"))
         this.element.removeAttribute('data-readonly');
       else
@@ -37,7 +39,7 @@ export class TreeData {
     });
     // block input if readonly
     this.element.addEventListener('beforeinput', e => {
-      if (this.element.hasAttribute('data-readonly')) e.preventDefault();
+      if (this.element.hasAttribute('data-readonly') || e.data === this.lock) e.preventDefault();
     });
   }
 }

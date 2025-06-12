@@ -1,11 +1,9 @@
 :root {
   --foreground: #dddddd;
   --foreground-dark: #aaaaaa;
-  --foreground-darker: #808080;
   --foreground-light: #ffffff;
 
   --region: #151515;
-  --region-dark: #0f0f0f; /*temp*/
   --region-light: #1d1d1d;
 
   --secondary-region: #292929;
@@ -24,11 +22,9 @@
   :root {
     --foreground: #111111;
     --foreground-dark: #444444;
-    --foreground-darker: #555555;
     --foreground-light: #000000;
 
     --region: #d2d2d2;
-    --region-dark: #f5f5f5; /*temp*/
     --region-light: #eeeeee;
 
     --secondary-region: #dfdfdf;

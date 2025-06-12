@@ -13,13 +13,13 @@ function rightToLeft(array, lock = '*') {
   return leftToRight(array.map(a => a.split('').reverse().join('')), lock).split('').reverse().join('');
 }
 
-export function getPatternFull(array, lock = '*') {
+function getPatternFull(array, lock = '*') {
   const left = leftToRight(array, lock);
   const right = rightToLeft(array, lock);
 
   return left.split('').map((char, i) => char === lock ? right[i] : char).join('');
 }
-export function getPattern(array, lock = '*') {
+function getPattern(array, lock = '*') {
   return getPatternFull(array, lock).replace(new RegExp(`\\${lock}+`, 'g'), lock);
 }
 
@@ -46,7 +46,32 @@ function extractMask(str, mask, lock = '*') {
 
 const combine = (a, b) => a.map((x, i) => x + (b[i] || '')).join('');
 
-export function setPattern(array, pattern, lock = '*') {
+function setPattern(array, pattern, lock = '*') {
   const mask = getPatternFull(array, lock);
   return array.map(a => combine(pattern.split(lock), extractMask(a, mask)));
 }
+
+const array = [
+  'file_abcd_v001.fbx',
+  'file_test_v002.fbx',
+  'file_abcd_v003.fbx',
+  'file_test_v004.fbx',
+  'file_abcd_v005.fbx',
+];
+
+const oldStr = "file_abcd_v001.fbx";
+const newStr = "bob_test_v00*.fbx";
+const mask = getPatternFull(array);
+
+console.log(oldStr);
+console.log(mask);
+console.log(newStr);
+
+console.log('');
+
+console.log(newStr.split('*'));
+const extmask = extractMask(oldStr, mask);
+extmask.shift();
+console.log(extmask);
+
+console.log(`\n${combine(newStr.split('*'), extmask)}`);
