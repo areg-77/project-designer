@@ -60,7 +60,8 @@ export class TreeNode {
     // todo: in the future move the filter into the Tree so that the user can change the sorting method later
     this.children.setSort(true, (a, b) =>
       (b.type.value === 'folder') - (a.type.value === 'folder') ||
-      a.label.value.localeCompare(b.label.value, undefined, { sensitivity: 'base' }))
+      a.label.value.localeCompare(b.label.value, undefined, { sensitivity: 'base' })
+    );
     
     this.parent = new BindedProperty(null, val => {
       const oldParent = this.parent?._value;
@@ -179,7 +180,7 @@ export class TreeNode {
     }
   }
 
-  scrollIntoView = () => this.element.treeNode.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  scrollIntoView = () => requestAnimationFrame(() => this.element.treeNode.scrollIntoView({ block: 'nearest', inline: 'nearest' }));
 
   path = () => `${this.parent.value?.path() ?? '..'}/${this.label.value}`;
   dom = () => this.parent.value ? `${this.parent.value.dom()}.children.value[${this.parent.value.children.value.indexOf(this)}]` : 'tree.content.value';
