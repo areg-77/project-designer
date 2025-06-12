@@ -43,9 +43,11 @@ export class TreeData {
         this.element.blur();
       }
       else {
-        if (((e.key === 'Backspace' && (isCursorAfterElement('lock') || isCursorAtStart())) || (e.key === 'Delete' && isCursorBeforeElement('lock'))) || isCursorInsideElement('lock')) {
+        const arrowKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
+        if (!arrowKeys.includes(e.key) &&
+            ((e.key === 'Backspace' && (isCursorAfterElement('lock') || isCursorAtStart())) || (e.key === 'Delete' && isCursorBeforeElement('lock')) || 
+            isCursorInsideElement('lock')))
           e.preventDefault();
-        }
       }
     });
     // block input if readonly

@@ -16,13 +16,17 @@ export class Tree {
     this.element.setAttribute('tabindex', '0');
     
     // listener for holding ctrl/command or shift
-    this.element.addEventListener('keydown', (e) => {
-      this.ctrlCmdPressed = e.ctrlKey || e.metaKey;
-      this.shiftPressed = e.shiftKey;
+    document.addEventListener('keydown', (e) => {
+      if (document.activeElement === this.element) {
+        this.ctrlCmdPressed = e.ctrlKey || e.metaKey;
+        this.shiftPressed = e.shiftKey;
+      }
     });
-    this.element.addEventListener('keyup', (e) => {
-      this.ctrlCmdPressed = e.ctrlKey || e.metaKey;
-      this.shiftPressed = e.shiftKey;
+    document.addEventListener('keyup', (e) => {
+      if (document.activeElement === this.element) {
+        this.ctrlCmdPressed = e.ctrlKey || e.metaKey;
+        this.shiftPressed = e.shiftKey;
+      }
     });
     this.element.addEventListener('blur', () => {
       this.ctrlCmdPressed = false;
