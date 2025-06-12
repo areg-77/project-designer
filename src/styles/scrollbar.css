@@ -17,3 +17,7 @@
   background-color: var(--scrollbar-hover);
   background-clip: content-box;
 }
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}

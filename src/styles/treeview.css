@@ -20,8 +20,7 @@
   color: var(--foreground);
   border-radius: 8px;
   padding: 2px;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: auto;
   scroll-behavior: smooth;
   height: 100%;
 }
@@ -63,7 +62,6 @@
 }
 
 .treeview ul {
-  overflow: hidden;
   margin: 0px 0px 0px 0px;
   padding: 0px 0px 0px 1em;
   border-radius: 0px 5px 5px 0px;
@@ -135,5 +133,4 @@
 .tree-label {
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
 }

@@ -13,12 +13,15 @@ function buildTree(tree, obj) {
 
 const tree = new Tree('tree', [
   new TreeData('path', (nodes, elem) => {
-    elem.style = "color: var(--foreground-dark)";
-    requestAnimationFrame(() => elem.scrollLeft = elem.scrollWidth);
+    elem.style = `
+      color: var(--foreground-dark);
+      direction: rtl;
+      text-align: left;
+    `;
     
     if (nodes.length > 1)
-      return `../${getPattern(nodes.map(n => n.label.value))} (${nodes.length})`;
-    return nodes[nodes.length - 1]?.path() ?? '../path';
+      return `\u200E../${getPattern(nodes.map(n => n.label.value))} (${nodes.length})`;
+    return '\u200E' + (nodes[nodes.length - 1]?.path() ?? '../path');
   }),
   new TreeData('name',
     (nodes) => {
