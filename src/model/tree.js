@@ -7,12 +7,16 @@ export class Tree {
     
     // listener for holding ctrl/command or shift
     document.addEventListener('keydown', (e) => {
-      this.ctrlCmdPressed = e.ctrlKey || e.metaKey;
-      this.shiftPressed = e.shiftKey;
+      if (document.activeElement === this.element) {
+        this.ctrlCmdPressed = e.ctrlKey || e.metaKey;
+        this.shiftPressed = e.shiftKey;
+      }
     });
     document.addEventListener('keyup', (e) => {
-      this.ctrlCmdPressed = e.ctrlKey || e.metaKey;
-      this.shiftPressed = e.shiftKey;
+      if (document.activeElement === this.element) {
+        this.ctrlCmdPressed = e.ctrlKey || e.metaKey;
+        this.shiftPressed = e.shiftKey;
+      }
     });
     this.element.addEventListener('blur', () => {
       this.ctrlCmdPressed = false;
