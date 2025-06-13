@@ -62,6 +62,8 @@
 }
 
 .treeview ul {
+  overflow: hidden;
+  min-width: fit-content;
   margin: 0px 0px 0px 0px;
   padding: 0px 0px 0px 1em;
   border-radius: var(--border-radius-1);
@@ -123,7 +125,6 @@
   padding: 3px 0px;
   display: flex;
   flex-shrink: 1;
-  overflow: hidden;
   align-items: center;
   gap: 0.3em;
 }

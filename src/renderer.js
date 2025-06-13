@@ -17,6 +17,7 @@ const tree = new Tree('tree', [
       color: var(--foreground-dark);
       direction: rtl;
       text-align: left;
+      text-overflow: ellipsis;
     `;
     
     if (nodes.length > 1)

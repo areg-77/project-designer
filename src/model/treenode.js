@@ -180,7 +180,27 @@ export class TreeNode {
     }
   }
 
-  scrollIntoView = () => requestAnimationFrame(() => this.element.treeNode.scrollIntoView({ block: 'nearest', inline: 'nearest' }));
+  scrollIntoView = () => {
+  requestAnimationFrame(() => {
+    const container = this.tree.element;
+    const node = this.element.treeNode;
+    if (!container || !node) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const nodeRect = node.getBoundingClientRect();
+
+    const offsetTop = nodeRect.top - containerRect.top;
+    const offsetBottom = offsetTop + node.offsetHeight;
+
+    const containerHeight = container.clientHeight;
+
+    if (offsetTop < 0)
+      container.scrollTop += offsetTop;
+    else if (offsetBottom > containerHeight)
+      container.scrollTop += offsetBottom - containerHeight;
+  });
+};
+
 
   path = () => `${this.parent.value?.path() ?? '..'}/${this.label.value}`;
   dom = () => this.parent.value ? `${this.parent.value.dom()}.children.value[${this.parent.value.children.value.indexOf(this)}]` : 'tree.content.value';
