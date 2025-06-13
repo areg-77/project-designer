@@ -11,14 +11,14 @@
   background-color: var(--region-light);
   padding: 2px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--border-radius-2);
 }
 
 .treeview {
   background-color: var(--region-light);
   border: 1px solid var(--border);
   color: var(--foreground);
-  border-radius: 8px;
+  border-radius: var(--border-radius-2);
   padding: 2px;
   overflow: auto;
   scroll-behavior: smooth;
@@ -64,7 +64,9 @@
 .treeview ul {
   margin: 0px 0px 0px 0px;
   padding: 0px 0px 0px 1em;
-  border-radius: 0px 5px 5px 0px;
+  border-radius: var(--border-radius-1);
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
 
   transition: background-color 300ms 100ms;
 }
@@ -76,7 +78,7 @@
   display: flex;
   flex-shrink: 0;
   margin: 1px;
-  border-radius: 5px;
+  border-radius: var(--border-radius-1);
   padding-right: 1em;
 
   transition: background-color 250ms;

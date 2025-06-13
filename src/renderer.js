@@ -20,8 +20,8 @@ const tree = new Tree('tree', [
     `;
     
     if (nodes.length > 1)
-      return `\u200E../${getPattern(nodes.map(n => n.label.value))} (${nodes.length})`;
-    return '\u200E' + (nodes[nodes.length - 1]?.path() ?? '../path');
+      return `&lrm;../${getPattern(nodes.map(n => n.label.value))}<span class="tag" contentEditable="false" style="margin-left: 0.5em;">${nodes.length}</span>&lrm;`;
+    return '&lrm;' + (nodes[nodes.length - 1]?.path() ?? '../path');
   }),
   new TreeData('name',
     (nodes) => {

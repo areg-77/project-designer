@@ -14,7 +14,7 @@
 
   background-color: var(--region-light);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--border-radius-2);
   padding: 10px;
   overflow-y: auto;
   /* scrollbar-gutter: stable both-edges; */
@@ -27,7 +27,7 @@
   gap: 3px;
   background-color: var(--secondary-region-dark);
   border: 1px solid var(--border-dark);
-  border-radius: 8px;
+  border-radius: var(--border-radius-2);
   padding: 3px;
   overflow: hidden;
 }
@@ -41,7 +41,7 @@
 
   background-color: var(--secondary-region-light);
   padding: 3px 5px;
-  border-radius: 5px;
+  border-radius: var(--border-radius-1);
   border: 1px solid var(--border);
   border-bottom-width: 2px;
 }
@@ -52,7 +52,7 @@
   gap: 0.5em;
   background-color: var(--secondary-region);
   border: 1px solid var(--border-dark);
-  border-radius: 5px;
+  border-radius: var(--border-radius-1);
   padding: 10px;
   overflow: hidden;
 }
@@ -63,7 +63,7 @@
   gap: 0.5em;
   background-color: var(--secondary-region);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--border-radius-2);
   padding: 2px;
 }
 
@@ -73,7 +73,7 @@
   padding: 2px 5px;
   border: 1px solid var(--border);
   border-bottom-width: 2px;
-  border-radius: 5px;
+  border-radius: var(--border-radius-1);
 }
 
 .data-value {
@@ -86,7 +86,7 @@
   align-items: center;
   background-color: var(--region);
   border: 1px solid var(--border);
-  border-radius: 5px;
+  border-radius: var(--border-radius-1);
 
   transition: border-color 200ms;
 }
@@ -115,8 +115,20 @@
   background-color: var(--secondary-region-dark);
   color: inherit;
   border: 1px solid var(--border-dark);
-  border-radius: 5px;
+  border-radius: var(--border-radius-1);
   height: 1em;
   user-select: text;
+  cursor: default;
+}
+
+.tag {
+  display: inline;
+  background-color: var(--secondary-region-dark);
+  color: inherit;
+  border: 1px solid var(--border-dark);
+  border-radius: var(--border-radius-1);
+  height: 1em;
+  padding: 0px 0.2em;
+  user-select: none;
   cursor: default;
 }

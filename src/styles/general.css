@@ -16,6 +16,9 @@
 
   --scrollbar: #555555;
   --scrollbar-hover: #808080;
+
+  --border-radius-1: 5px;
+  --border-radius-2: 8px;
 }
 
 @media (prefers-color-scheme: light) {
