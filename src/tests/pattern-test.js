@@ -52,15 +52,12 @@ function setPattern(array, pattern, lock = '*') {
 }
 
 const array = [
-  'file_abcd_v001.fbx',
-  'file_test_v002.fbx',
-  'file_abcd_v003.fbx',
-  'file_test_v004.fbx',
-  'file_abcd_v005.fbx',
+  'file_abcd.fbx',
+  'file_abcd_v002.fbx',
 ];
 
-const oldStr = "file_abcd_v001.fbx";
-const newStr = "bob_test_v00*.fbx";
+const oldStr = "file_abcd.fbx";
+const newStr = "bob_abcd_*.fbx";
 const mask = getPatternFull(array);
 
 console.log(oldStr);
@@ -71,7 +68,6 @@ console.log('');
 
 console.log(newStr.split('*'));
 const extmask = extractMask(oldStr, mask);
-extmask.shift();
 console.log(extmask);
 
 console.log(`\n${combine(newStr.split('*'), extmask)}`);

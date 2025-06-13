@@ -49,8 +49,9 @@ const tree = new Tree('tree', [
   })
 ]);
 
-const treeObject = await window.electronAPI.readProject('D:/_ELECTRON/_PROJECTDESIGNER/Project');
+const treeObject = await window.electronAPI.readProject('D:/_ELECTRON/_PROJECTDESIGNER/proj_test_01');
 tree.content.value = buildTree(tree, treeObject);
+requestAnimationFrame(() => tree.content.value.throughChildrens(c => c.expanded.value = false));
 
 // temp area
 window.TreeNode = TreeNode;

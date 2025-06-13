@@ -32,7 +32,7 @@ function extractMask(str, mask, lock = '*') {
   ).join('') + '$';
 
   const match = str.match(new RegExp(pattern));
-  if (!match) return null;
+  if (!match) return [''];
 
   let groupIndex = 1;
   return parts.reduce((res, p) => {
