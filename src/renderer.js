@@ -49,10 +49,15 @@ const tree = new Tree('tree', [
   })
 ]);
 
-const treeObject = await window.electronAPI.readProject('D:/_ELECTRON/_PROJECTDESIGNER/proj_test_01');
+const treeObject = await window.electronAPI.readProject('D:/_ELECTRON/_PROJECTDESIGNER/Project');
 tree.content.value = buildTree(tree, treeObject);
-requestAnimationFrame(() => tree.content.value.throughChildrens(c => c.expanded.value = false));
+const treeNew = await window.electronAPI.readProject('D:/_ELECTRON/_PROJECTDESIGNER/project-designer/screenshots');
+// tree.content.value = buildTree(tree, treeNew);
+// requestAnimationFrame(() => tree.content.value.throughChildrens(c => c.expanded.value = false));
 
 // temp area
 window.TreeNode = TreeNode;
 window.tree = tree;
+window.buildTree = buildTree;
+window.treeObject = treeObject;
+window.treeNew = treeNew;

@@ -46,6 +46,7 @@ export class Tree {
 
     // content (first TreeNode)
     this.content = new BindedProperty(null, val => {
+      this.element.innerHTML = '';
       if (val) {
         while (this.element.firstChild)
           this.element.removeChild(this.element.firstChild);
