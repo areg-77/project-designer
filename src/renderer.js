@@ -55,6 +55,55 @@ const treeNew = await window.electronAPI.readProject('D:/_ELECTRON/_PROJECTDESIG
 // tree.content.value = buildTree(tree, treeNew);
 // requestAnimationFrame(() => tree.content.value.throughChildrens(c => c.expanded.value = false));
 
+const tabs = document.getElementById('tabs');
+const tabLabels = document.querySelectorAll('.tab-label');
+const tabContents = document.querySelectorAll('.tab-content');
+const tabSelected = document.querySelector('.tab-selected');
+let activeIndex = 0;
+
+function updateTabs(index) {
+  tabLabels.forEach(l => l.classList.remove('active'));
+  tabContents.forEach(c => c.classList.remove('active'));
+
+  tabLabels[index].classList.add('active');
+  tabContents[index].classList.add('active');
+  moveSelected(tabLabels[index]);
+}
+
+function moveSelected(label) {
+  const x = label.offsetLeft;
+  const y = label.offsetTop;
+  const w = label.offsetWidth;
+  const h = label.offsetHeight;
+
+  const margin = 2;
+  tabSelected.style.transform = `translate(${x + margin}px, ${y + margin}px)`;
+  tabSelected.style.width = `${w - margin*2}px`;
+  tabSelected.style.height = `${h - margin*2}px`;
+}
+
+tabLabels.forEach((label, index) => {
+  label.addEventListener('click', () => {
+    activeIndex = index;
+    updateTabs(activeIndex);
+  });
+});
+
+tabs.addEventListener('wheel', (event) => {
+  event.preventDefault();
+
+  if (event.deltaY > 0 && activeIndex < tabLabels.length - 1) {
+    activeIndex++;
+    updateTabs(activeIndex);
+  } else if (event.deltaY < 0 && activeIndex > 0) {
+    activeIndex--;
+    updateTabs(activeIndex);
+  }
+  document.activeElement.blur();
+}, { passive: false });
+
+moveSelected(tabLabels[activeIndex]);
+
 // temp area
 window.TreeNode = TreeNode;
 window.tree = tree;

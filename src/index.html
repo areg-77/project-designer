@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" href="styles/treeview.css"/>
     <link rel="stylesheet" href="styles/treedata.css"/>
+    <link rel="stylesheet" href="styles/tabs.css"/>
   </head>
   <body>
     <main class="maingrid">
@@ -22,23 +23,38 @@
       </div>
 
       <div class="treedata-container">
-        <div>Properties</div>
+        <div class="tabs" id="tabs">
+          <div class="tab-selected"></div>
+          <div class="tab-label active">Properties</div>
+          <div class="tab-label">Project Template</div>
+        </div>
+
         <div class="treedata">
-          <div class="data-group-container">
-            <div class="group-label"><span class="icon ui properties"></span>Properties</div>
-            <div class="data-group">
-              <div class="data-field">
-                <div class="data-label">Name</div>
-                <div id="name" class="data-value"></div>
+          <div class="tab-content-container">
+            <div class="tab-content active">
+              <div class="data-group-container">
+                <div class="group-label"><span class="icon ui properties"></span>Properties</div>
+                <div class="data-group">
+                  <div class="data-field">
+                    <div class="data-label">Name</div>
+                    <div id="name" class="data-value"></div>
+                  </div>
+                  <div class="data-field">
+                    <div class="data-label">Type</div>
+                    <div id="type" class="data-value"></div>
+                  </div>
+                  <div class="data-field">
+                    <div class="data-label">DOM</div>
+                    <div id="dom" class="data-value"></div>
+                  </div>
+                </div>
               </div>
-              <div class="data-field">
-                <div class="data-label">Type</div>
-                <div id="type" class="data-value"></div>
-              </div>
-              <div class="data-field">
-                <div class="data-label">DOM</div>
-                <div id="dom" class="data-value"></div>
-              </div>
+            </div>
+
+            <div class="tab-content">
+              <h2 style="margin: 0px;">Templates</h2>
+              <h3>Coming soon... (+50 commits)</h3>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora quae commodi repellendus alias qeropik adipisci sunt, deserunt consectetur itaque, omnis aliquid cupiditate similique! Amet quia itaque dignissimos quidem unde rerum!</p>
             </div>
           </div>
         </div>
